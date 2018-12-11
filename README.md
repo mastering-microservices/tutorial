@@ -13,7 +13,7 @@
 
 ## Communication entre microservices par envoi asynchrone de messages
 
-JHipster permet une communication entre microservices par l'envoi asynchrone de messages via des brokers de messages tels que RabbitMQ ou Apache Kafka.
+JHipster permet une communication entre microservices par l'envoi asynchrone de messages via des brokers de messages tels que RabbitMQ ou Apache Kafka. Cette fonction fait partie de [Spring Cloud Stream](https://cloud.spring.io/spring-cloud-static/Dalston.SR5/multi/multi__introducing_spring_cloud_stream.html).
 
 Installez le générateur generator-jhipster-spring-cloud-stream
 ```bash
@@ -56,7 +56,7 @@ open http://localhost:15672/#/
 
 Testez l’envoi de messages via l’interface Swagger UI (disponible depuis `Administration > API > notification`)
 
-> NB: les messages peuvent être sérialisés dans un format comme JSON pour être échangés avec des micro-services non-Java.
+> NB: les messages peuvent être sérialisés dans un format comme JSON pour être échangés avec des micro-services non-Java. [Plus de détails](https://cloud.spring.io/spring-cloud-static/Dalston.SR5/multi/multi_contenttypemanagement.html)
 
 Vérifiez la non persistance des messages en redémarrant le micro-service `notification`. L'opération GET retourne une liste vide.
 
