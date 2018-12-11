@@ -9,5 +9,5 @@
 
 ## Mise en place du CI/CD
 
-## Mise en place de l'infracstructure microservices de JHipster
+## Mise en place de l'infrastructure microservices de JHipster
 
