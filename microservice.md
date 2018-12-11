@@ -4,7 +4,7 @@
 * [Sommaire](./README.md)
 * [Installation](./install.md)
 * [Création d'un monolithe](./monolith.md)
-* [Création d'une architecture microservices](./microservice.md)
+* Création d'une architecture microservices
 * [Bonus track](./bonus.md)
 
 ## Mise en place de l'infrastructure microservices de JHipster

@@ -1,7 +1,7 @@
 # Tutoriel sur les microservices avec JHipster
 
 ## Plan
-* [Sommaire](./README.md)
+* Sommaire
 * [Installation](./install.md)
 * [Création d'un monolithe](./monolith.md)
 * [Création d'une architecture microservices](./microservice.md)

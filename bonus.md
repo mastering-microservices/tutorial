@@ -5,7 +5,7 @@
 * [Installation](./install.md)
 * [Création d'un monolithe](./monolith.md)
 * [Création d'une architecture microservices](./microservice.md)
-* [Bonus track](./bonus.md)
+* Bonus track
 
 ## Générer mvnw dans un projet Maven
 ```bash

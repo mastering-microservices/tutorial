@@ -1,5 +1,11 @@
 # Tutoriel sur les microservices avec JHipster :: Démarrage avec un monolithe
 
+## Plan
+* [Sommaire](./README.md)
+* [Installation](./install.md)
+* Création d'un monolithe
+* [Création d'une architecture microservices](./microservice.md)
+* [Bonus track](./bonus.md)
 
 ## Recupération des fichiers
 ```bash
