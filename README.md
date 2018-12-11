@@ -79,6 +79,57 @@ TODO
 
 ## Démarrage avec un monolithe
 
+```bash
+mkdir -p ~/github/mastering-microservices/
+git clone https://github.com/mastering-microservices/tutorial.git
+```
+
+### Création de l'application de base
+```bash
+mkdir -p ~/github/mastering-microservices/online-store
+cd  ~/github/mastering-microservices/online-store
+jhipster
+```
+
+```bash
+./gradlew
+```
+
+```bash
+open http://localhost:8080
+```
+
+### Génération des entités de l'application store
+
+Visualisez le [schéma du service monolithique](./online-store.jh) avec le [JDL Studio](https://start.jhipster.tech/jdl-studio/). L'image est [ici](./online-store.jh.png).
+
+Générez les sources (frontend et backend) relatives aux entités et à leurs relations.
+```bash
+cd  ~/github/mastering-microservices/online-store
+jhipster import-jdl ../tutorial/online-store.jh
+```
+
+Lancez l'application en profil `dev`.
+```bash
+./gradlew
+```
+
+Ouvrez l'application dans un browser avec le rafraissement automatique en cas de modification des sources du frontend
+```bash
+yarn start
+```
+
+Ouvrez l'application dans un browser
+```bash
+open http://localhost:8080
+```
+
+Loggez vous en utilisateur `admin` `admin` et parcourez l'API Swagger (A)
+```bash
+open http://localhost:8080
+```
+
+
 ## Analyse de la qualité du code
 
 ## Mise en place du CI/CD
@@ -137,3 +188,13 @@ Vérifiez la non persistance des messages en redémarrant le micro-service `noti
 References:
 * https://github.com/hipster-labs/generator-jhipster-spring-cloud-stream
 * https://www.jhipster.tech/using-kafka/
+
+
+## Bonus track
+
+### Générer mvnw dans un projet Maven
+```bash
+chmod +x mvnw
+~/devtools/apache-maven-X.X.X/bin/mvn -N io.takari:maven:wrapper
+./mvnw
+```
