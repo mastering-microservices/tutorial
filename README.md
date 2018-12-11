@@ -72,16 +72,16 @@ Testez votre compte créé sur Google Cloud Platform
 gcloud init
 ```
 
-### Docker
-```bash
-TODO
-```
+### Docker CE
+Suivez les instructions de https://docs.docker.com/install/ et https://docs.docker.com/compose/install/ pour `docker-compose`.
 
+```bash
+docker --version
+docker-compose --version
+```
 
 ### Kubernetes
-```bash
-TODO
-```
+Suivez les instructions de https://kubernetes.io/docs/setup/ en fonction de votre environnement.
 
 ## Démarrage avec un monolithe
 
@@ -288,6 +288,7 @@ codegen go-server; (cd go-server; tree .)
 ```bash
 codegen jmeter; (cd jmeter; ls -al)
 ```
+> Rien pour l'injecteur de charge [Gatling](https://gatling.io/) !
 
 ### Lancement l'application store en mode (ie profil) `prod`
 
@@ -328,7 +329,7 @@ TODO
 ```bash
 ./gradlew bootRepackage -x test -Pprod
 ```
-
+> `-x test` n'exécute pas les tests
 
 ### Lancement l'application store en mode (ie profil) `prod` dans un container
 
@@ -381,6 +382,28 @@ Sauvegardez l'image de l'application
 ```bash
 TODO
 ```
+
+## Lancement l'injecteur de de charge avec [Gatling](https://gatling.io/)
+
+Suivez la section "Performance tests" de https://www.jhipster.tech/running-tests/
+
+```bash
+cd  ~/github/mastering-microservices/
+wget https://repo1.maven.org/maven2/io/gatling/highcharts/gatling-charts-highcharts-bundle/2.3.1/gatling-charts-highcharts-bundle-2.3.1-bundle.zip
+unzip gatling-charts-highcharts-bundle-2.3.1-bundle.zip
+
+
+GATLING_HOME=~/github/mastering-microservices/gatling-charts-highcharts-bundle-2.3.1-bundle/
+
+cd  ~/github/mastering-microservices/online-store
+cd src/test/gatling
+tree .
+
+$GATLING_HOME/bin/recorder.sh
+
+$GATLING_HOME/bin/gatling.sh
+```
+
 
 ## Mise en place de l'infrastructure microservices de JHipster
 
