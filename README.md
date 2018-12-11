@@ -205,14 +205,89 @@ jhipster ci-cd
 cat Jenkinsfile
 ```
 
-Poussez le projet online-store vers un dépot Git (public ou privé) préalablement créé.
+Poussez le projet `online-store` vers un dépot Git (public ou privé) préalablement créé.
 ```bash
 GITHUB_USERNAME=moncomptegithub
 git remote add origin git@github.com:$GITHUB_USERNAME/online-store.git
 git push -u origin master
 ```
 
-Ajoutez le pipeline Jenkinsfile pour le projet online-store
+Ajoutez le pipeline `Jenkinsfile` pour le projet `online-store`.
+
+
+### Utilisation de l'API REST avec cURL
+TODO
+```bash
+TODO
+```
+
+
+
+### Géneration et utilisation de l'API REST
+Le descripteur du service est disponible ici http://localhost:8080/v2/api-docs . Il est généré à partir des annotations des classes `Resource` du paquetage `com.mycompany.store.web.rest` et des classes Entity ou DTO (en fonction de la [directive de génération `dto`](https://www.jhipster.tech/jdl/)). Vous pouvez compléter les annotations avec les [annotations Swagger](https://github.com/swagger-api/swagger-core/wiki/Annotations-1.5.X) pour améliorer l'information de votre API.
+
+Installez `swagger-codegen` ([pour plus d'information](https://swagger.io/docs/open-source-tools/swagger-codegen/)).
+```bash
+mkdir -p ~/github/mastering-microservices/swagger-codegen
+cd ~/github/mastering-microservices/swagger-codegen
+wget https://oss.sonatype.org/content/repositories/releases/io/swagger/swagger-codegen-cli/2.2.1/swagger-codegen-cli-2.2.1.jar
+mv swagger-codegen-cli-2.2.1.jar swagger-codegen.jar
+java -jar swagger-codegen.jar help
+```
+> Available languages: [android, aspnet5, async-scala, cwiki, csharp, cpprest, dart, flash, python-flask, go, groovy, java, jaxrs, jaxrs-cxf, jaxrs-resteasy, jaxrs-spec, inflector, javascript, javascript-closure-angular, jmeter, nancyfx, nodejs-server, objc, perl, php, python, qt5cpp, ruby, scala, scalatra, silex-PHP, sinatra, rails5, slim, spring, dynamic-html, html, html2, swagger, swagger-yaml, swift, tizen, typescript-angular2, typescript-angular, typescript-node, typescript-fetch, akka-scala, CsharpDotNet2, clojure, haskell, lumen, go-server]
+
+```bash
+codegen() {
+  mkdir -p $1
+  (cd $1;  java -jar ../swagger-codegen.jar generate -i ../swagger.json -l $1)  
+}
+```
+
+Récupérez la définition Swagger. Vous pouvez installer l'outil `jq` (https://stedolan.github.io/jq/download/) pour formatter le document `swagger.json`.
+```bash
+cd ~/github/mastering-microservices/swagger-codegen
+wget http://localhost:8080/v2/api-docs -O swagger.json
+jq '.' swagger.json
+```
+
+> Remarque: il existe un plugin [Swagger Codegen](https://github.com/swagger-api/swagger-codegen/tree/master/modules/swagger-codegen-maven-plugin) pour Maven pour intégrer la génération des documents, des clients et des serveurs dans le build.
+
+#### Génération de la documentation HTML
+```bash
+codegen html2
+(cd html2; open index.html)
+```
+
+#### Génération de clients
+```bash
+# Client bash basé sur cURL
+codegen bash; (cd bash; tree .)
+
+codegen typescript-angular; (cd typescript-angular; tree .)
+
+codegen python; (cd python; tree .)
+
+codegen cpprest; (cd cpprest; tree .)
+
+codegen php; (cd php; tree .)
+
+```
+
+#### Génération de squelettes de serveurs
+```bash
+codegen python-flask; (cd python-flask; tree .)
+
+codegen nodejs-server; (cd nodejs-server; tree .)
+
+codegen spring; (cd spring; tree .)
+
+codegen go-server; (cd go-server; tree .)
+```
+
+#### Génération d'un plan de charge pour l'injecteur [Apache JMeter](https://jmeter.apache.org/)
+```bash
+codegen jmeter; (cd jmeter; ls -al)
+```
 
 ### Lancement l'application store en mode (ie profil) `prod`
 
