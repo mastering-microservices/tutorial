@@ -334,7 +334,7 @@ codegen jmeter; (cd jmeter; ls -al)
 Construisez le WAR de l'application
 ```bash
 cd  ~/github/mastering-microservices/online-store
-./gradlew bootRepackage -Pprod
+./gradlew bootWar -Pprod
 ls -al build/libs/*.war
 ```
 
@@ -365,7 +365,7 @@ docker-compose -f src/main/docker/mysql.yml down
 TODO
 
 ```bash
-./gradlew bootRepackage -x test -Pprod
+./gradlew bootWar -x test -Pprod
 ```
 > `-x test` n'exécute pas les tests
 
@@ -373,7 +373,7 @@ TODO
 
 Construisez l'image du conteneur
 ```bash
-./gradlew bootRepackage -Pprod buildDocker
+./gradlew bootWar -Pprod buildDocker
 docker images | grep store
 ```
 

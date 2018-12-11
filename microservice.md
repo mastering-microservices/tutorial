@@ -196,9 +196,7 @@ De nouvelles entités sont ajoutées dans le microservice notification [notifica
 ## Génération du code de la gateway
 ```bash
 cd  ~/github/mastering-microservices/gateway
-jhipster import-jdl ../tutorial/gateway-jdl.jh
-jhipster import-jdl ../tutorial/notification-jdl.jh --skip-uigrouping
-jhipster import-jdl ../tutorial/invoice-jdl.jh --skip-ui-grouping
+jhipster import-jdl ../tutorial/gateway-jdl-all.jh
 ```
 
 ## Génération du code du microservice invoice
@@ -255,19 +253,15 @@ cd  ~/github/mastering-microservices/invoice
 
 ```bash
 cd  ~/github/mastering-microservices/gateway
-./gradlew bootRepackage -Pprod buildDocker -x test
+./gradlew bootWar -Pprod buildDocker -x test
 docker images | grep gateway
-```
 
-```bash
 cd  ~/github/mastering-microservices/invoice
-./gradlew bootRepackage -Pprod buildDocker -x test
+./gradlew bootWar -Pprod buildDocker -x test
 docker images | grep invoice
-```
 
-```bash
 cd  ~/github/mastering-microservices/notification
-./gradlew bootRepackage -Pprod buildDocker -x test
+./gradlew bootWar -Pprod buildDocker -x test
 docker images | grep notification
 ```
 
@@ -276,6 +270,33 @@ docker images | grep notification
 mkdir -p  ~/github/mastering-microservices/docker-compose
 cd  ~/github/mastering-microservices/docker-compose
 jhipster docker-compose
+```
+
+```
+? Which *type* of application would you like to deploy? Microservice application
+? Which *type* of gateway would you like to use? JHipster gateway based on Netflix Zuul
+? Enter the root directory where your gateway(s) and microservices are located ../
+3 applications found at ~/github/mastering-microservices/
+? Which applications do you want to include in your configuration? gateway, invoice, notification
+? Which applications do you want to use with clustered databases (only available with MongoDB and Couchbase)? notification
+? Do you want to setup monitoring for your applications ? Yes, for logs and metrics with the JHipster Console (based on ELK and Zipkin)
+? You have selected the JHipster Console which is based on the ELK stack and additional technologies, which one do you want to use ? Curator, to help you curate and manage your Elasticsearch indices, Zipkin, for distributed tracing (only compatible with JHipster >= v4.2.0) JHipster registry detected as the service discovery and configuration provider used by your apps
+? Enter the admin password used to secure the JHipster Registry admin
+```
+
+## Surveillance des Microservices
+La console de supervision de JHipster s'appuie sur ELK et Zipkin.
+
+[Plus de détail](https://www.jhipster.tech/monitoring/).
+
+```bash
+cd ~/github/mastering-microservices
+git clone https://github.com/jhipster/jhipster-console.git
+cd jhipster-console
+cd bootstrap/
+docker-compose up -d
+docker-compose ps
+docker-compose logs -f
 ```
 
 ## Communication entre microservices par envoi asynchrone de messages
