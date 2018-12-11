@@ -181,7 +181,7 @@ HEAD="${CURL} -X HEAD --header \""$ACCEPT_JSON"\""
 ${GET} ${URL_SWAGGER} > swagger.json
 
 # ===================================
-# Authenfication operations
+# Authentication operations
 # -----------------------------------
 USERNAME=user
 PASSWORD=user
@@ -200,6 +200,10 @@ jwt $TOKEN
 
 # Get account info
 ${GET} --header "$AUTH" ${URL}/api/account
+
+# ===================================
+# Operations on Product resource
+# -----------------------------------
 
 # Get all products
 ${GET} ${URL}/api/products
@@ -233,7 +237,7 @@ ${GET} ${URL}/api/products
 CHANGE='{
   "price": 1500
 }'
-${PUT} --header "$AUTH" --header "$CONTENT_JSON" ${URL}/api/products/$PRODUCT_ID -d "$CHANGE"
+${PUT} --header "$AUTH" --header "$CONTENT_JSON" ${URL}/api/products/${PRODUCT_ID} -d "$CHANGE"
 # --> 400
 
 # Update one existing product
@@ -242,17 +246,17 @@ CHANGE='{
   "price": 1500,
   "size": "S",
 }'
-${PUT} --header "$AUTH" --header "$CONTENT_JSON" ${URL}/api/products/$PRODUCT_ID -d "$CHANGE"
+${PUT} --header "$AUTH" --header "$CONTENT_JSON" ${URL}/api/products/${PRODUCT_ID} -d "$CHANGE"
 # --> according the PUT meaning, other properties should not be updated by the operation
 
 # Get the updated product
-${GET} --header "$AUTH" --header "$CONTENT_JSON" ${URL}/api/products/$PRODUCT_ID
+${GET} --header "$AUTH" --header "$CONTENT_JSON" ${URL}/api/products/${PRODUCT_ID}
 
 # Get all products
 ${GET} --header "$AUTH" --header "$CONTENT_JSON" ${URL}/api/products
 
 # Remove the updated product
-${DELETE} --header "$AUTH" --header "$CONTENT_JSON" ${URL}/api/products/$PRODUCT_ID
+${DELETE} --header "$AUTH" --header "$CONTENT_JSON" ${URL}/api/products/${PRODUCT_ID}
 
 ```
 
