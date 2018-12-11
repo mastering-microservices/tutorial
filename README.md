@@ -307,8 +307,6 @@ Sauvegardez l'image de l'application
 TODO
 ```
 
-
-
 ## Mise en place de l'infrastructure microservices de JHipster
 
 ## Communication entre microservices par envoi asynchrone de messages
