@@ -1,5 +1,7 @@
 # Tutoriel sur les microservices avec JHipster :: Microservices
 
+L'objectif de cette partie est la mise en place de microservices avec l'infrastructure microservices de JHipster.
+
 ## Plan
 * [Sommaire](./README.md)
 * [Installation](./install.md)
@@ -7,7 +9,110 @@
 * Création d'une architecture microservices
 * [Bonus track](./bonus.md)
 
-## Mise en place de l'infrastructure microservices de JHipster
+## Création de la gateway et des microservices
+L'infrastructure de base est constitué de :
+* du registre de services de JHipster
+* de l'API Gateway de JHipster
+* d'un microservice invoice (utilisant une base de données mysql)
+* d'un microservice notification (utilisant une base de données mongodb)
+
+
+### Création de la gateway (vierge)
+```bash
+mkdir -p ~/github/mastering-microservices/gateway
+cd  ~/github/mastering-microservices/gateway
+jhipster
+```
+
+### Création d'un microservice (vierge) invoice
+```bash
+mkdir -p ~/github/mastering-microservices/invoice
+cd  ~/github/mastering-microservices/invoice
+jhipster
+```
+
+### Création d'un microservice (vierge) notification
+```bash
+mkdir -p ~/github/mastering-microservices/invoice
+cd  ~/github/mastering-microservices/invoice
+jhipster
+```
+
+### Lancement du registre
+```bash
+cd ~/github/mastering-microservices/gateway
+docker-compose -f src/main/docker/jhipster-registry.yml up
+```
+
+### Lancement de la gateway
+Lancez l'application en profil `dev`.
+```bash
+cd ~/github/mastering-microservices/gateway
+./gradlew
+```
+
+### Visite guidée de l'application gateway
+```bash
+open http://localhost:8080
+```
+[Plus d'information ...](https://www.jhipster.tech/api-gateway/)
+
+### Visite guidée du registre
+```bash
+open http://localhost:8761
+```
+[Plus d'information ...](https://www.jhipster.tech/jhipster-registry/)
+
+### Lancement du  microservice invoice
+Lancez l'application en profil `dev`.
+```bash
+cd  ~/github/mastering-microservices/invoice
+./gradlew
+```
+> Remarque : La base de données utilisée est H2 pour le profil `dev`. En profil `prod`, il y aura un conflit de prot (`3306`) entre le container mysql utilisé par la gateway et celui utilisé par le microservice.
+
+Consultez le descripteur Swagger
+```bash
+wget http://localhost:8081/v2/api-docs -O swagger.json
+jq "." swagger.json
+```
+
+### Création d'un microservice (vierge) notification
+Lancez le container mongodb.
+```bash
+cd  ~/github/mastering-microservices/invoice
+docker-compose -f src/main/docker/mongodb.yml up -d
+docker-compose -f src/main/docker/mongodb.yml logs -f
+```
+
+Lancez l'application en profil `dev` (attendre que mongodb soit prêt au service).
+```bash
+cd  ~/github/mastering-microservices/invoice
+./gradlew
+```
+
+Consultez le descripteur Swagger
+```bash
+wget http://localhost:8082/v2/api-docs -O swagger.json
+jq "." swagger.json
+```
+
+### Visite guidée de l'application gateway
+```bash
+open http://localhost:8080
+```
+> Que voyez vous ?
+> Que se passe t'il si un des microservices est arrêté (simulation d'une panne, ...)?
+
+### Visite guidée du registre
+```bash
+open http://localhost:8761
+```
+> Que voyez vous ?
+> Que se passe t'il si un des microservices est arrêté (simulation d'une panne, ...)?
+
+##
+
 
 
 
@@ -23,6 +128,7 @@ yarn global add generator-jhipster-spring-cloud-stream
 
 Lancez le générateur generator-jhipster-spring-cloud-stream avec le microservice `notification`
 ```bash
+
 cd notification
 yo jhipster-spring-cloud-stream
 git status
