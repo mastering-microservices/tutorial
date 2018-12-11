@@ -60,14 +60,16 @@ References:
  * https://devcenter.heroku.com/articles/heroku-cli-command
 
 ### Google Cloud SDK
-Suivez les instructions de
+Suivez les instructions de https://cloud.google.com/sdk/docs/downloads-interactive
 ```bash
-TODO
+curl https://sdk.cloud.google.com | bash
+exec -l $SHELL
+gcloud help
 ```
 
 Testez votre compte créé sur Google Cloud Platform
 ```bash
-TODO
+gcloud init
 ```
 
 ### Kubernetes
