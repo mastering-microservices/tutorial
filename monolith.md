@@ -141,7 +141,115 @@ Ajoutez le pipeline `Jenkinsfile` pour le projet `online-store`.
 ## Utilisation de l'API REST avec cURL
 TODO
 ```bash
-TODO
+
+# Installation
+sudo apt-get install curl jq
+
+# Content-Type
+ACCEPT_JSON="Accept: application/json"
+ACCEPT_CSV="Accept: text/csv"
+CONTENT_JSON="Content-Type: application/json"
+CONTENT_CSV="Content-Type: text/csv"
+
+# LOCAL
+PORT=8080
+URL=http://localhost:$PORT
+
+# PROD
+#PORT=443
+#URL=https://store.mycompany.com:$PORT
+
+# Doc
+URL_APIDOC=${URL}/v2/api-docs
+
+# Operations
+# CURL="curl --verbose"
+CURL="curl -k --verbose"
+GET="${CURL} -X GET --header \""$ACCEPT_JSON"\""
+POST="${CURL} -X POST --header \""$ACCEPT_JSON"\""
+PUT="${CURL} -X PUT --header \""$ACCEPT_JSON"\""
+DELETE="${CURL} -X DELETE --header \""$ACCEPT_JSON"\""
+OPTIONS="${CURL} -X OPTIONS --header \""$ACCEPT_JSON"\""
+HEAD="${CURL} -X HEAD --header \""$ACCEPT_JSON"\""
+
+# ===================================
+# Get OpenAPI2.0 specification of the API
+# -----------------------------------
+${GET} ${URL_SWAGGER} > swagger.json
+
+# ===================================
+# Authenfication operations
+# -----------------------------------
+# 0 for admin
+# 5 for user
+
+USERNAME=user
+PASSWORD=user
+
+AUTH_JSON="{ \"username\": \"${USERNAME}\", \"password\": \"${PASSWORD}\" }"
+
+# Get the Bearer token for the user
+rm $USERNAME.token.json
+${POST}  --header "$CONTENT_JSON" -d "$AUTH_JSON" ${URL}/api/authenticate > $USERNAME.token.json
+TOKEN=$(jq -r '.id_token' $USERNAME.token.json)
+AUTH="Authorization: Bearer $TOKEN"
+echo "JWT Token $TOKEN is valid"
+
+# Get account info
+${GET} --header "$AUTH" ${URL}/api/account
+
+# Get all products
+${GET} ${URL}/api/products
+# --> 401 Unauthorized
+${GET} --header "$AUTH" ${URL}/api/products
+# --> 200
+${GET} --header "$AUTH" ${URL}/api/products/1
+
+# Add one new product
+PRODUCT='{
+  "name": "TEST",
+  "description": "This is a test",
+  "price": 5,
+  "size": "XXL",
+  "productCategory": {
+    "id": 1,
+    "name": "TEST",
+    "description": "TESTTEST"
+  }
+}'
+${POST} --header "$AUTH" --header "$CONTENT_JSON" ${URL}/api/products -d "$PRODUCT"
+
+# Get the id of the created product
+# TODO with jq ".id" 
+
+# Get all products
+${GET} ${URL}/api/products
+
+# Update one existing product
+CHANGE='{
+  "price": 1500
+}'
+${PUT} --header "$AUTH" --header "$CONTENT_JSON" ${URL}/api/products/3 -d "$CHANGE"
+# --> 400
+
+# Update one existing product
+CHANGE='{
+  "name": "NEWTEST"
+  "price": 1500,
+  "size": "S",
+}'
+${PUT} --header "$AUTH" --header "$CONTENT_JSON" ${URL}/api/products/3 -d "$CHANGE"
+# --> according the PUT meaning, other properties should not be updated by the operation
+
+# Get the updated product
+${GET} --header "$AUTH" --header "$CONTENT_JSON" ${URL}/api/products/3
+
+# Get all products
+${GET} --header "$AUTH" --header "$CONTENT_JSON" ${URL}/api/products
+
+# Remove the updated product
+${DELETE} --header "$AUTH" --header "$CONTENT_JSON" ${URL}/api/products/3
+
 ```
 
 ## Géneration et utilisation de l'API REST
