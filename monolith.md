@@ -139,11 +139,13 @@ Ajoutez le pipeline `Jenkinsfile` pour le projet `online-store`.
 
 
 ## Utilisation de l'API REST avec cURL
-TODO
+Executez les commandes suivantes pour invoquer les opérations de l'API du service.
+
 ```bash
 
 # Installation
 sudo apt-get install curl jq
+sudo npm install -g jwt-cli
 
 # Content-Type
 ACCEPT_JSON="Accept: application/json"
@@ -158,6 +160,7 @@ URL=http://localhost:$PORT
 # PROD
 #PORT=443
 #URL=https://store.mycompany.com:$PORT
+#URL=https://microservice-tutorial-store.herukoapp.com:$PORT
 
 # Doc
 URL_APIDOC=${URL}/v2/api-docs
@@ -180,9 +183,6 @@ ${GET} ${URL_SWAGGER} > swagger.json
 # ===================================
 # Authenfication operations
 # -----------------------------------
-# 0 for admin
-# 5 for user
-
 USERNAME=user
 PASSWORD=user
 
@@ -193,7 +193,10 @@ rm $USERNAME.token.json
 ${POST}  --header "$CONTENT_JSON" -d "$AUTH_JSON" ${URL}/api/authenticate > $USERNAME.token.json
 TOKEN=$(jq -r '.id_token' $USERNAME.token.json)
 AUTH="Authorization: Bearer $TOKEN"
-echo "JWT Token $TOKEN is valid"
+
+# Decode JWT Token for fun !
+echo "Decode JWT Token $TOKEN"
+jwt $TOKEN
 
 # Get account info
 ${GET} --header "$AUTH" ${URL}/api/account
@@ -220,7 +223,7 @@ PRODUCT='{
 ${POST} --header "$AUTH" --header "$CONTENT_JSON" ${URL}/api/products -d "$PRODUCT"
 
 # Get the id of the created product
-# TODO with jq ".id" 
+# TODO with jq ".id"
 
 # Get all products
 ${GET} ${URL}/api/products
