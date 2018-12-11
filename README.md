@@ -2,6 +2,60 @@
 
 ## Prerequis
 
+### Installation JHipster
+Suivez les instructions dans https://www.jhipster.tech/installation/
+
+#### Java
+```bash
+scp -i ~/.ssh/xnet jdk-11.0.1_linux-x64_bin.deb tuto@host-1:~
+```
+
+#### Nvm et Node
+Suivez les instructions dans https://github.com/creationix/nvm
+```bash
+wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
+nvm ls-remote
+nvm install stable
+nodejs --version
+```
+
+#### Yeoman
+```bash
+npm install -g yo
+yo --version
+```
+
+#### JHipster Generator
+```bash
+npm install -g generator-jhipster
+jhipster --version
+```
+
+### Heroku
+```bash
+TODO
+```
+
+Testez votre compte créé sur Heroku
+```bash
+TODO
+```
+
+
+### Google Cloud SDK
+```bash
+TODO
+```
+
+Testez votre compte créé sur Google Cloud Platform
+```bash
+TODO
+```
+
+### Kubernetes
+```bash
+TODO
+```
 
 ## Démarrage avec un monolithe
 
