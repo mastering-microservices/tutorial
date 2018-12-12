@@ -384,7 +384,10 @@ open https://hub.docker.com/r/$REPO/
 
 Créez un cluster dans la zone europe-west1-b de GCE depuis https://console.cloud.google.com/kubernetes/list
 
+![GCP Services](./gcp-k8s-services.png)
 
+
+Lancez les containers sur le cluster
 ```
 gcloud container clusters get-credentials tuto-cluster --zone  europe-west1-b
 ```
@@ -393,16 +396,51 @@ gcloud container clusters get-credentials tuto-cluster --zone  europe-west1-b
 ./kubectl-apply.sh
 ```
 
+Repérez les adresses IP des composants avec
+```
+kubectl get svc -n tuto-store
+```
+
+
+Repérez l'adresse IP externe de la gateway avec
 ```
 kubectl get svc gateway -n tuto-store
 ```
+```
+NAME      TYPE           CLUSTER-IP      EXTERNAL-IP    PORT(S)          AGE
+gateway   LoadBalancer   10.123.456.789   35.123.456.789   8080:32082/TCP   8h
+```
 
-[GCP](./gcp-k8s-services.png)
+Ouvrez la page du service store (le frontend Angular est livré sur la gateway):
+```
+open http://35.123.456.789:8080
+```
+
+Repérez l'adresse IP externe de la console avec
+```
+kubectl get svc jhipster-console -n tuto-store
+```
 
 
+![GCP Console](./gcp-console.png)
+
+Plus de commandes kubectl https://kubernetes.io/docs/reference/kubectl/overview/
+
+Exposez le registre et repérez l'adresse IP externe de le registre avec les instructions suivantes
+```
+kubectl expose service jhipster-registry --type=NodePort --name=exposed-registry -n tuto-store
+kubectl get svc exposed-registry -n tuto-store
+kubectl scale statefulset jhipster-registry --replicas 2 -n tuto-store
+```
+
+Répliquez le registre exposé
+```
+kubectl get svc exposed-registry -n tuto-store
+kubectl scale statefulset jhipster-registry --replicas 2 -n tuto-store
+kubectl get svc exposed-registry -n tuto-store
+```
 
 ## Gestion et authenfication OAuth2 des utilisateurs avec JHipster UAA
-
 
 ```bash
 mkdir -p ~/github/mastering-microservices/uaa
@@ -446,11 +484,9 @@ docker-compose -f src/main/docker/keycloak.yml up
 
 [Plus d'information sur OKTA](https://www.jhipster.tech/security/)
 
-
 ## Fiabilisation des communication inter-microservices
 
 [Plus d'information](https://www.jhipster.tech/using-uaa/#inter-service-communication)
-
 
 ## Communication entre microservices par envoi asynchrone de messages
 
