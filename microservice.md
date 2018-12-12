@@ -249,19 +249,19 @@ cd  ~/github/mastering-microservices/invoice
 ./gradlew
 ```
 
-## Construction des images de microservices
+## Construction des images des containers de production
 
 ```bash
 cd  ~/github/mastering-microservices/gateway
-./gradlew bootWar -Pprod buildDocker -x test
+./gradlew -Pprod bootWar buildDocker -x test
 docker images | grep gateway
 
 cd  ~/github/mastering-microservices/invoice
-./gradlew bootWar -Pprod buildDocker -x test
+./gradlew -Pprod bootWar buildDocker -x test
 docker images | grep invoice
 
 cd  ~/github/mastering-microservices/notification
-./gradlew bootWar -Pprod buildDocker -x test
+./gradlew -Pprod bootWar buildDocker -x test
 docker images | grep notification
 ```
 
@@ -354,17 +354,30 @@ JHipster registry detected as the service discovery and configuration provider u
 ? Choose the kubernetes service type for your edge services LoadBalancer - Let a kubernetes cloud provider automatically assign an IP
 ```
 
-Poussez les images vers votre dépôt public (hub.docker.com) or privé.
+Loggez vous sur votre dépôt public (hub.docker.com) or privé.
+```
+docker login
+> Login with your Docker ID to push and pull images from Docker Hub. If you don't have a Docker ID, head over to https://hub.docker.com to create one.
+> Username: masteringmicroservice
+> Password:
+```
+
+
+Poussez les images vers votre dépôt public (hub.docker.com) or privé (Container Registry de GCP https://console.cloud.google.com/gcr/images/tuto-store?project=tuto-store).
+
 ```
 REPO=masteringmicroservice
-docker image tag gateway $REPO/gateway
-docker push $REPO/gateway
 
-docker image tag invoice $REPO/invoice
-docker push $REPO/invoice
+push_image(){
+  CONTAINER=$1
+  docker image tag $CONTAINER $REPO/$CONTAINER
+  docker images | grep $CONTAINER
+  docker push $REPO/$CONTAINER
+}
 
-docker image tag invoice $REPO/notification
-docker push $REPO/notification
+push_image gateway
+push_image invoice
+push_image notification
 
 open https://hub.docker.com/r/$REPO/
 ```
