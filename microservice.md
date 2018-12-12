@@ -440,54 +440,6 @@ kubectl scale statefulset jhipster-registry --replicas 2 -n tuto-store
 kubectl get svc exposed-registry -n tuto-store
 ```
 
-## Gestion et authenfication OAuth2 des utilisateurs avec JHipster UAA
-
-```bash
-mkdir -p ~/github/mastering-microservices/uaa
-cd  ~/github/mastering-microservices/uaa
-jhipster
-```
-
-```
-? Which *type* of application would you like to create? JHipster UAA server (for microservice OAuth2 authentication)
-? What is the base name of your application? uaa
-? As you are running in a microservice architecture, on which port would like your server to run? It should be unique to avoid  port conflicts. 9999
-? What is your default Java package name? com.mycompany.store
-? Which service discovery server do you want to use? JHipster Registry (uses Eureka, provides Spring Cloud Config support and monitoring dashboards)
-? Which *type* of database would you like to use? SQL (H2, MySQL, MariaDB, PostgreSQL, Oracle, MSSQL)
-? Which *production* database would you like to use? MySQL
-? Which *development* database would you like to use? H2 with disk-based persistence
-? Do you want to use the Spring cache abstraction? Yes, with the Hazelcast implementation (distributed cache, for multiple nodes)
-? Do you want to use Hibernate 2nd level cache? Yes
-? Would you like to use Maven or Gradle for building the backend? Gradle
-? Which other technologies would you like to use?
-? Would you like to enable internationalization support? Yes
-? Please choose the native language of the application English
-? Please choose additional languages to install French
-? Besides JUnit and Jest, which testing frameworks would you like to use? Gatling, Cucumber
-? Would you like to install other generators from the JHipster Marketplace? No
-```
-
-Regénérez l'API gateway et les microservices en sélectionnant le JHipster UAA server pour l'authentification.
-
-[Plus d'information sur JHipster UAA](https://www.jhipster.tech/using-uaa/)
-
-## Gestion et authenfication OAuth2 des utilisateurs avec Keycloak
-
-```
-docker-compose -f src/main/docker/keycloak.yml up
-```
-
-[Plus d'information sur Keycloak](https://www.jhipster.tech/security/)
-
-## Gestion et authenfication OAuth2 des utilisateurs avec OKTA
-
-[Plus d'information sur OKTA](https://www.jhipster.tech/security/)
-
-## Fiabilisation des communication inter-microservices
-
-[Plus d'information](https://www.jhipster.tech/using-uaa/#inter-service-communication)
-
 ## Communication entre microservices par envoi asynchrone de messages
 
 JHipster permet une communication entre microservices par l'envoi asynchrone de messages via des brokers de messages tels que RabbitMQ ou Apache Kafka. Cette fonction fait partie de [Spring Cloud Stream](https://cloud.spring.io/spring-cloud-static/Dalston.SR5/multi/multi__introducing_spring_cloud_stream.html).
@@ -538,6 +490,60 @@ Testez l’envoi de messages via l’interface Swagger UI (disponible depuis `Ad
 
 Vérifiez la non persistance des messages en redémarrant le micro-service `notification`. L'opération GET retourne une liste vide.
 
-References:
+
+## Fiabilisation des communication inter-microservices
+
+[Plus d'information](https://www.jhipster.tech/using-uaa/#inter-service-communication)
+
+
+
+## Gestion et authenfication OAuth2 des utilisateurs
+
+### Gestion et authenfication OAuth2 des utilisateurs avec JHipster UAA
+
+```bash
+mkdir -p ~/github/mastering-microservices/uaa
+cd  ~/github/mastering-microservices/uaa
+jhipster
+```
+
+```
+? Which *type* of application would you like to create? JHipster UAA server (for microservice OAuth2 authentication)
+? What is the base name of your application? uaa
+? As you are running in a microservice architecture, on which port would like your server to run? It should be unique to avoid  port conflicts. 9999
+? What is your default Java package name? com.mycompany.store
+? Which service discovery server do you want to use? JHipster Registry (uses Eureka, provides Spring Cloud Config support and monitoring dashboards)
+? Which *type* of database would you like to use? SQL (H2, MySQL, MariaDB, PostgreSQL, Oracle, MSSQL)
+? Which *production* database would you like to use? MySQL
+? Which *development* database would you like to use? H2 with disk-based persistence
+? Do you want to use the Spring cache abstraction? Yes, with the Hazelcast implementation (distributed cache, for multiple nodes)
+? Do you want to use Hibernate 2nd level cache? Yes
+? Would you like to use Maven or Gradle for building the backend? Gradle
+? Which other technologies would you like to use?
+? Would you like to enable internationalization support? Yes
+? Please choose the native language of the application English
+? Please choose additional languages to install French
+? Besides JUnit and Jest, which testing frameworks would you like to use? Gatling, Cucumber
+? Would you like to install other generators from the JHipster Marketplace? No
+```
+
+Regénérez l'API gateway et les microservices en sélectionnant le JHipster UAA server pour l'authentification.
+
+[Plus d'information sur JHipster UAA](https://www.jhipster.tech/using-uaa/)
+
+### Gestion et authenfication OAuth2 des utilisateurs avec Keycloak
+
+```
+docker-compose -f src/main/docker/keycloak.yml up
+```
+
+[Plus d'information sur Keycloak](https://www.jhipster.tech/security/)
+
+### Gestion et authenfication OAuth2 des utilisateurs avec OKTA
+
+[Plus d'information sur OKTA](https://www.jhipster.tech/security/)
+
+
+## References
 * https://github.com/hipster-labs/generator-jhipster-spring-cloud-stream
 * https://www.jhipster.tech/using-kafka/
