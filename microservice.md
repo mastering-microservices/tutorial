@@ -335,7 +335,7 @@ cd github/mastering-microservices/
 mkdir kubernetes && cd kubernetes
 jhipster kubernetes
 ```
-Répondez aux questions
+Répondez aux questions suivantes:
 ```
 ? Which *type* of application would you like to deploy? Microservice application
 ? Enter the root directory where your gateway(s) and microservices are located ../
@@ -501,10 +501,12 @@ Vérifiez la non persistance des messages en redémarrant le micro-service `noti
 
 ### Gestion et authenfication OAuth2 des utilisateurs avec JHipster UAA
 
+Regénerez la gateway
 ```bash
 mkdir -p ~/github/mastering-microservices/uaa
 cd  ~/github/mastering-microservices/uaa
 jhipster
+
 ```
 
 ```
@@ -533,9 +535,75 @@ Regénérez l'API gateway et les microservices en sélectionnant le JHipster UAA
 
 ### Gestion et authenfication OAuth2 des utilisateurs avec Keycloak
 
+
+```bash
+mkdir -p ~/github/mastering-microservices/gateway_keycloak
+cd  ~/github/mastering-microservices/gateway_keycloak
+jhipster
 ```
-docker-compose -f src/main/docker/keycloak.yml up
+Répondez aux questions suivantes:
 ```
+? Which *type* of application would you like to create? Microservice gateway
+? What is the base name of your application? gateway
+? As you are running in a microservice architecture, on which port would like your server to run? It should be unique to avoid port conflicts. 8080
+? What is your default Java package name? com.mycompany.store
+? Which service discovery server do you want to use? JHipster Registry (uses Eureka, provides Spring Cloud Config support and monitoring dashboards)
+? Which *type* of authentication would you like to use? OAuth 2.0 / OIDC Authentication (stateful, works with Keycloak and Okta)
+? Which *type* of database would you like to use? SQL (H2, MySQL, MariaDB, PostgreSQL, Oracle, MSSQL)
+? Which *production* database would you like to use? MySQL
+? Which *development* database would you like to use? H2 with disk-based persistence
+? Do you want to use Hibernate 2nd level cache? Yes
+? Would you like to use Maven or Gradle for building the backend? Gradle
+? Which other technologies would you like to use?
+? Which *Framework* would you like to use for the client? Angular 6
+? Would you like to enable *SASS* support using the LibSass stylesheet preprocessor? Yes
+? Would you like to enable internationalization support? Yes
+? Please choose the native language of the application English
+? Please choose additional languages to install French
+? Besides JUnit and Jest, which testing frameworks would you like to use?
+? Would you like to install other generators from the JHipster Marketplace? No
+```
+
+Lancez le container keycloak
+```bash
+docker-compose -f src/main/docker/keycloak.yml up -d
+docker-compose -f src/main/docker/keycloak.yml ps
+docker-compose -f src/main/docker/keycloak.yml logs -f
+```
+
+Lancez le service de registre
+```bash
+cd  ~/github/mastering-microservices/gateway_keycloak
+docker-compose -f src/main/docker/jhipster-registry.yml up -d
+docker-compose -f src/main/docker/jhipster-registry.yml logs -f
+```
+
+Lancez la gateway en profil `dev` et les microservices.
+```bash
+cd  ~/github/mastering-microservices/gateway_keycloak
+./gradlew
+```
+
+Loggez-vous via la gateway (admin Administration)
+```bash
+open http://localhost:8080
+```
+> Que se passe t'il ?
+
+Loggez-vous sur la console d'adminstration de Keycloak
+```bash
+open http://localhost:9080
+open http://localhost:9080/auth/admin/master/console/#/realms/jhipster
+```
+
+Configurez le realm jhipster pour
+* créer de nouveaux utilisateurs,
+* changer le thème,
+* autoriser le login via les réseaux sociaux,
+* activer le OTP,
+* ...
+
+![Keycloak Console ](./keycloak-console.png)
 
 [Plus d'information sur Keycloak](https://www.jhipster.tech/security/)
 
