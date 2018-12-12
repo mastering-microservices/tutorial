@@ -186,7 +186,7 @@ open http://localhost:8761
 Il convient maintenant de réurbaniser le schéma de l'application online-store en microservices puis de générer le code de ces derniers.
 
 Les entités du schéma initial sont répartis entre
-* l'API Gateway [gateway-jdl.jh](./gateway-jdl.jh)
+* l'API Gateway [gateway-jdl-all.jh](./gateway-jdl-all.jh)
 * et le microservice invoice [invoice-jdl.jh](./invoice-jdl.jh)
 
 La relation OneToMany `ProductOrder{invoice} to Invoice{order}` est remplacé par une propriété `invoiceId` dans l'entité `ProductOrder`.
@@ -271,7 +271,7 @@ mkdir -p  ~/github/mastering-microservices/docker-compose
 cd  ~/github/mastering-microservices/docker-compose
 jhipster docker-compose
 ```
-
+Répondez aux questions suivantes:
 ```
 ? Which *type* of application would you like to deploy? Microservice application
 ? Which *type* of gateway would you like to use? JHipster gateway based on Netflix Zuul
@@ -284,7 +284,20 @@ jhipster docker-compose
 ? Enter the admin password used to secure the JHipster Registry admin
 ```
 
-## Surveillance des Microservices
+Lancez les containers via la composition
+```bash
+docker-compose up -d
+docker-compose ps
+docker-compose logs -f
+```
+
+Créez une instance supplémentaire de `invoice-app`
+```bash
+docker-compose scale invoice-app=2
+```
+
+
+## Supervision des Microservices
 La console de supervision de JHipster s'appuie sur ELK et Zipkin.
 
 [Plus de détail](https://www.jhipster.tech/monitoring/).
@@ -293,11 +306,110 @@ La console de supervision de JHipster s'appuie sur ELK et Zipkin.
 cd ~/github/mastering-microservices
 git clone https://github.com/jhipster/jhipster-console.git
 cd jhipster-console
-cd bootstrap/
 docker-compose up -d
 docker-compose ps
 docker-compose logs -f
 ```
+Ouvrez la Console
+```bash
+open http://localhost:5601
+```
+Il faut préalablement modifier à la propriété `logging.logstash.enabled=true` dans le fichier `application-prod.yml` de la gateway et des microservices puis regénérer et redémarrer leurs containers.
+
+
+
+```bash
+open http://localhost:5601
+```
+
+## Deploiement avec Kubernetes
+
+```bash
+docker --version
+kubectl version
+```
+
+
+```bash
+cd github/mastering-microservices/
+mkdir kubernetes && cd kubernetes
+jhipster kubernetes
+```
+Répondez aux questions
+```
+? Which *type* of application would you like to deploy? Microservice application
+? Enter the root directory where your gateway(s) and microservices are located ../
+3 applications found at ~/github/mastering-microservices/
+? Which applications do you want to include in your configuration? gateway, invo
+ice, notification
+? Do you want to setup monitoring for your applications ? Yes, for logs and metr
+ics with the JHipster Console (based on ELK and Zipkin)
+? Which applications do you want to use with clustered databases (only available with MongoDB and Couchbase)? notification
+JHipster registry detected as the service discovery and configuration provider used by your apps
+? Enter the admin password used to secure the JHipster Registry admin
+? What should we use for the Kubernetes namespace? store
+? What should we use for the base Docker repository name? masteringmicroservice
+? What command should we use for push Docker image to repository? docker push
+? Do you want to configure Istio? Not required
+? Choose the kubernetes service type for your edge services LoadBalancer - Let a kubernetes cloud provider automatically assign an IP
+```
+
+Poussez les images vers votre dépôt public (hub.docker.com) or privé.
+```
+REPO=masteringmicroservice
+docker image tag gateway $REPO/gateway
+docker push $REPO/gateway
+
+docker image tag invoice $REPO/invoice
+docker push $REPO/invoice
+
+docker image tag invoice $REPO/notification
+docker push $REPO/notification
+
+open https://hub.docker.com/r/$REPO/
+```
+
+Créez un cluster dans la zone europe-west1-b de GCE depuis https://console.cloud.google.com/kubernetes/list
+
+
+```
+gcloud container clusters get-credentials tuto-cluster --zone  europe-west1-b
+```
+
+```
+./kubectl-apply.sh
+```
+
+```
+kubectl get svc gateway -n tuto-store
+```
+
+
+## Gestion et authenfications des utilisateurs avec JHipster UAA
+
+```
+
+```
+
+[Plus d'information sur JHipster UAA](https://www.jhipster.tech/using-uaa/)
+
+## Gestion et authenfications des utilisateurs avec Keycloak
+
+```
+docker-compose -f src/main/docker/keycloak.yml up
+```
+
+[Plus d'information sur Keycloak](https://www.jhipster.tech/security/)
+
+## Gestion et authenfication des utilisateurs avec OKTA
+
+[Plus d'information sur OKTA](https://www.jhipster.tech/security/)
+
+
+## Fiabilisation des communication inter-microservices
+
+[Plus d'information](hhttps://www.jhipster.tech/using-uaa/#inter-service-communication)
+
 
 ## Communication entre microservices par envoi asynchrone de messages
 
