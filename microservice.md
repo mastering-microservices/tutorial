@@ -590,7 +590,7 @@ open http://localhost:8080
 ```
 > Que se passe t'il ?
 
-Loggez-vous sur la console d'adminstration de Keycloak
+Loggez-vous sur la console d'adminstration de Keycloak (admin admin)
 ```bash
 open http://localhost:9080
 open http://localhost:9080/auth/admin/master/console/#/realms/jhipster
@@ -600,7 +600,7 @@ Configurez le realm jhipster pour
 * créer de nouveaux utilisateurs,
 * changer le thème,
 * autoriser le login via les réseaux sociaux,
-* activer le OTP,
+* activer le One Time Password (via [Google Authenticator](https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2)),
 * ...
 
 ![Keycloak Console ](./keycloak-console.png)
