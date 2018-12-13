@@ -362,12 +362,54 @@ docker-compose -f src/main/docker/mysql.yml down
 ```
 
 ## Lancement l'application store en mode (ie profil) `prod` sur Heroku
-TODO
 
+Contruire le warfile
 ```bash
 ./gradlew bootWar -x test -Pprod
 ```
 > `-x test` n'exécute pas les tests
+
+
+
+```bash
+heroku login -i
+
+heroku deploy:jar --jar build/libs/store-0.0.1-SNAPSHOT.war --app tuto-store
+
+heroku open  --app tuto-store
+open https://tuto-store.herokuapp.com
+
+heroku logs --tail --app tuto-store
+# Failed to connect to mysql
+```
+
+Ajoutez le add-on MySQL
+```bash
+open https://dashboard.heroku.com/apps/tuto-store/settings
+
+heroku addons:open jawsdb  --app tuto-store
+
+heroku config --app tuto-store
+heroku config:get DATABASE_URL --app tuto-store
+```
+
+Ajoutez les propriétés du add-on MySQL à configurer dans l'application
+```bash
+heroku config:set \
+   JDBC_DATABASE_URL=jdbc:mysql://xxxxxxxx.xxxxxxxx.eu-west-1.rds.amazonaws.com:3306/dddddddddddd?verifyServerCertificate=false  \
+   JDBC_DATABASE_USERNAME=uuuuuuuuuu  \
+   JDBC_DATABASE_PASSWORD=pppppppppp  \
+ --app tuto-store
+
+#heroku config:unset PORT --app tuto-store
+
+heroku logs --tail --app tuto-store
+```
+
+Affichez la page du service quand celui ci est lancé.
+```bash
+heroku open  --app tuto-store
+```
 
 ## Lancement l'application store en mode (ie profil) `prod` dans un container
 
