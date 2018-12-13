@@ -34,6 +34,7 @@ yo --version
 ```bash
 npm install -g generator-jhipster
 jhipster --version
+# show all the subgenerators
 ```
 
 ## Heroku
