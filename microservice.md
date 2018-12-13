@@ -490,12 +490,14 @@ Testez l’envoi de messages via l’interface Swagger UI (disponible depuis `Ad
 
 Vérifiez la non persistance des messages en redémarrant le micro-service `notification`. L'opération GET retourne une liste vide.
 
+### References
+* https://github.com/hipster-labs/generator-jhipster-spring-cloud-stream
+* https://www.jhipster.tech/using-kafka/
+
 
 ## Fiabilisation des communication inter-microservices
 
 [Plus d'information](https://www.jhipster.tech/using-uaa/#inter-service-communication)
-
-
 
 ## Gestion et authenfication OAuth2 des utilisateurs
 
@@ -611,7 +613,6 @@ Configurez le realm jhipster pour
 
 [Plus d'information sur OKTA](https://www.jhipster.tech/security/)
 
+### "Backend for Frontend Pattern" pour l'application Ionic store-ion
 
-## References
-* https://github.com/hipster-labs/generator-jhipster-spring-cloud-stream
-* https://www.jhipster.tech/using-kafka/
+Générez une seconde gateway exposant une API simplifiée de `online-store.jh` pour l'application mobile Ionic `store-ion`.
