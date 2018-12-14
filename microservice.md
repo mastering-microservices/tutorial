@@ -13,9 +13,9 @@ L'objectif de cette partie est la mise en place de microservices avec l'infrastr
 L'infrastructure de base est constitué de :
 * du registre de services de JHipster
 * de l'API Gateway de JHipster
-* d'un microservice invoice (utilisant une base de données mysql)
+* d'un microservice productorder (utilisant une base de données mysql)
+* d'un microservice invoice (utilisant une base de données postgres)
 * d'un microservice notification (utilisant une base de données mongodb)
-
 
 ### Création de la gateway (vierge)
 ```bash
@@ -48,16 +48,16 @@ upport and monitoring dashboards)
 ? Would you like to install other generators from the JHipster Marketplace? No
 ```
 
-### Création d'un microservice (vierge) invoice
+### Création d'un microservice (vierge) productorder
 ```bash
-mkdir -p ~/github/mastering-microservices/invoice
-cd  ~/github/mastering-microservices/invoice
+mkdir -p ~/github/mastering-microservices/productorder
+cd  ~/github/mastering-microservices/productorder
 jhipster
 ```
 Répondez aux questions suivantes:
 ```
 ? Which *type* of application would you like to create? Microservice application
-? What is the base name of your application? invoice
+? What is the base name of your application? productorder
 ? As you are running in a microservice architecture, on which port would like your server to run? It should be uniq
 ue to avoid port conflicts. 8081
 ? What is your default Java package name? com.mycompany.store
@@ -79,12 +79,41 @@ ultiple nodes)
 ? Would you like to install other generators from the JHipster Marketplace? No
 ```
 
-
-
-### Création d'un microservice (vierge) notification
+### Création d'un microservice (vierge) invoice
 ```bash
 mkdir -p ~/github/mastering-microservices/invoice
 cd  ~/github/mastering-microservices/invoice
+jhipster
+```
+Répondez aux questions suivantes:
+```
+? Which *type* of application would you like to create? Microservice application
+? What is the base name of your application? invoice
+? As you are running in a microservice architecture, on which port would like your server to run? It should be uniq
+ue to avoid port conflicts. 8082
+? What is your default Java package name? com.mycompany.store
+? Which service discovery server do you want to use? JHipster Registry (uses Eureka, provides Spring Cloud Config s
+upport and monitoring dashboards)
+? Which *type* of authentication would you like to use? JWT authentication (stateless, with a token)
+? Which *type* of database would you like to use? SQL (H2, MySQL, MariaDB, PostgreSQL, Oracle, MSSQL)
+? Which *production* database would you like to use? PostgreSQL
+? Which *development* database would you like to use? H2 with disk-based persistence
+? Do you want to use the Spring cache abstraction? Yes, with the Hazelcast implementation (distributed cache, for m
+ultiple nodes)
+? Do you want to use Hibernate 2nd level cache? Yes
+? Would you like to use Maven or Gradle for building the backend? Gradle
+? Which other technologies would you like to use?
+? Would you like to enable internationalization support? Yes
+? Please choose the native language of the application English
+? Please choose additional languages to install French
+? Besides JUnit and Jest, which testing frameworks would you like to use? Gatling, Cucumber
+? Would you like to install other generators from the JHipster Marketplace? No
+```
+
+### Création d'un microservice (vierge) notification
+```bash
+mkdir -p ~/github/mastering-microservices/notification
+cd  ~/github/mastering-microservices/notification
 jhipster
 ```
 
@@ -107,7 +136,6 @@ dashboards)
 ? Besides JUnit and Jest, which testing frameworks would you like to use? Gatling, Cucumber
 ? Would you like to install other generators from the JHipster Marketplace? No
 ```
-
 
 ### Lancement du registre
 ```bash
@@ -134,10 +162,10 @@ open http://localhost:8761
 ```
 [Plus d'information ...](https://www.jhipster.tech/jhipster-registry/)
 
-### Lancement du  microservice invoice
+### Lancement du microservice productorder
 Lancez l'application en profil `dev`.
 ```bash
-cd  ~/github/mastering-microservices/invoice
+cd  ~/github/mastering-microservices/productorder
 ./gradlew
 ```
 > Remarque : La base de données utilisée est H2 pour le profil `dev`. En profil `prod`, il y aura un conflit de prot (`3306`) entre le container mysql utilisé par la gateway et celui utilisé par le microservice.
@@ -145,6 +173,19 @@ cd  ~/github/mastering-microservices/invoice
 Consultez le descripteur Swagger
 ```bash
 wget http://localhost:8081/v2/api-docs -O swagger.json
+jq "." swagger.json
+```
+
+### Lancement du microservice invoice
+Lancez l'application en profil `dev`.
+```bash
+cd  ~/github/mastering-microservices/invoice
+./gradlew
+```
+
+Consultez le descripteur Swagger
+```bash
+wget http://localhost:8082/v2/api-docs -O swagger.json
 jq "." swagger.json
 ```
 
@@ -164,7 +205,7 @@ cd  ~/github/mastering-microservices/notification
 
 Consultez le descripteur Swagger
 ```bash
-wget http://localhost:8082/v2/api-docs -O swagger.json
+wget http://localhost:8083/v2/api-docs -O swagger.json
 jq "." swagger.json
 ```
 
@@ -186,17 +227,26 @@ open http://localhost:8761
 Il convient maintenant de réurbaniser le schéma de l'application online-store en microservices puis de générer le code de ces derniers.
 
 Les entités du schéma initial sont répartis entre
-* l'API Gateway [gateway-jdl-all.jh](./gateway-jdl-all.jh)
+* et le microservice productorder [productorder-jdl.jh](./productorder-jdl.jh)
 * et le microservice invoice [invoice-jdl.jh](./invoice-jdl.jh)
 
-La relation OneToMany `ProductOrder{invoice} to Invoice{order}` est remplacé par une propriété `invoiceId` dans l'entité `ProductOrder`.
-
 De nouvelles entités sont ajoutées dans le microservice notification [notification-jdl.jh](./notification-jdl.jh)
+
+L'ensemble des entités décrites dans la définition [gateway-jdl-all.jh](./gateway-jdl-all.jh) servira à la génération du frontend qui sera servi par l'API gateway.
+
+La relation OneToMany `ProductOrder{invoice} to Invoice{order}` est remplacé par une propriété `invoiceId` dans l'entité `ProductOrder`.
 
 ## Génération du code de la gateway
 ```bash
 cd  ~/github/mastering-microservices/gateway
 jhipster import-jdl ../tutorial/gateway-jdl-all.jh
+```
+
+## Génération du code du microservice productorder
+
+```bash
+cd  ~/github/mastering-microservices/productorder
+jhipster import-jdl ../tutorial/productorder-jdl.jh
 ```
 
 ## Génération du code du microservice invoice
@@ -228,6 +278,13 @@ cd ~/github/mastering-microservices/gateway
 ./gradlew
 ```
 
+### Lancement du microservice productorder
+Lancez l'application en profil `dev`.
+```bash
+cd  ~/github/mastering-microservices/productorder
+./gradlew
+```
+
 ### Lancement du microservice invoice
 Lancez l'application en profil `dev`.
 ```bash
@@ -255,6 +312,10 @@ cd  ~/github/mastering-microservices/invoice
 cd  ~/github/mastering-microservices/gateway
 ./gradlew -Pprod bootWar buildDocker -x test
 docker images | grep gateway
+
+cd  ~/github/mastering-microservices/productorder
+./gradlew -Pprod bootWar buildDocker -x test
+docker images | grep productorder
 
 cd  ~/github/mastering-microservices/invoice
 ./gradlew -Pprod bootWar buildDocker -x test
@@ -382,6 +443,7 @@ push_image(){
 
 push_image gateway
 push_image invoice
+push_image productorder
 push_image notification
 
 open https://hub.docker.com/r/$REPO/
@@ -586,6 +648,10 @@ Répondez aux questions suivantes:
 ? Please choose additional languages to install French
 ? Besides JUnit and Jest, which testing frameworks would you like to use?
 ? Would you like to install other generators from the JHipster Marketplace? No
+```
+
+```bash
+jhipster import-jdl ../tutorial/gateway-jdl-all.jh
 ```
 
 Lancez le container keycloak
