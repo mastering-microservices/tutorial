@@ -504,6 +504,16 @@ Vérifiez la non persistance des messages en redémarrant le micro-service `noti
 
 [Plus d'information](https://www.jhipster.tech/using-uaa/#inter-service-communication)
 
+```bash
+yarn global add generator-jhipster-feign-client
+```
+
+```bash
+cd ~/github/mastering-microservices/invoice/
+yo jhipster-feign-client
+```
+
+
 ## Gestion et authenfication OAuth2 des utilisateurs
 
 ### Gestion et authenfication OAuth2 des utilisateurs avec JHipster UAA
