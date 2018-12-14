@@ -502,17 +502,24 @@ Vérifiez la non persistance des messages en redémarrant le micro-service `noti
 
 ## Fiabilisation des communication inter-microservices
 
-[Plus d'information](https://www.jhipster.tech/using-uaa/#inter-service-communication)
-
+Installez et lancez le [sous-générateur swagger] (https://www.jhipster.tech/modules/marketplace/#/details/generator-jhipster-swagger-cli)
 ```bash
-yarn global add generator-jhipster-feign-client
+npm install -g generator-jhipster-swagger-cli
+yo jhipster-swagger-cli
+```
+Répondez aux questions suivantes:
+```
+? Where is your Swagger/OpenAPI spec (URL or path) ? http://petstore.swagger.io/v2/swagger.json
+? What is the unique name for your API client ? petstore
+? Do you want to save this config for future reuse ? No
 ```
 
+Jetez un coup d'oeil au code généré
 ```bash
-cd ~/github/mastering-microservices/invoice/
-yo jhipster-feign-client
+tree src/main/java/com/mycompany/store/client/
 ```
 
+[Plus d'information sur Feign](https://www.jhipster.tech/using-uaa/#inter-service-communication)
 
 ## Gestion et authenfication OAuth2 des utilisateurs
 

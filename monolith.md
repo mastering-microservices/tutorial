@@ -47,7 +47,7 @@ jhipster
 Lancez l'application en profil `dev`.
 ```bash
 ./gradlew
-```
+``` 
 
 Loggez vous en utilisateur `admin` `admin` et parcourez les différents sous-menus d'administration (dont l'API Swagger via Swagger UI).
 ```bash
