@@ -37,6 +37,14 @@ jhipster --version
 # show all the subgenerators
 ```
 
+## Docker CE
+Suivez les instructions de https://docs.docker.com/install/ et https://docs.docker.com/compose/install/ pour `docker-compose`.
+
+```bash
+docker --version
+docker-compose --version
+```
+
 ## Heroku
 Suivez les instructions de https://devcenter.heroku.com/articles/heroku-cli
 ```bash
@@ -49,21 +57,18 @@ Testez votre compte créé sur Heroku via le lien https://signup.heroku.com/
 heroku help
 heroku login
 heroku login -i
-
-heroku teams
-heroku spaces
-heroku status
-heroku regions
-heroku authorizations
-heroku releases
-heroku notifications
-heroku notifications --read
-heroku orgs
-heroku orgs --json
 ```
 
 References:
  * https://devcenter.heroku.com/articles/heroku-cli-command
+
+## Kubectl
+
+Suivez les instructions de https://kubernetes.io/docs/tasks/tools/install-kubectl/
+
+## Kubernetes (optionel)
+
+Suivez les instructions de https://kubernetes.io/docs/setup/ en fonction de votre environnement.
 
 ## Google Cloud SDK
 Suivez les instructions de https://cloud.google.com/sdk/docs/downloads-interactive
@@ -78,13 +83,4 @@ Testez votre compte créé sur Google Cloud Platform
 gcloud init
 ```
 
-## Docker CE
-Suivez les instructions de https://docs.docker.com/install/ et https://docs.docker.com/compose/install/ pour `docker-compose`.
-
-```bash
-docker --version
-docker-compose --version
-```
-
-## Kubernetes
-Suivez les instructions de https://kubernetes.io/docs/setup/ en fonction de votre environnement.
+## Rancher (optionel)
