@@ -389,13 +389,23 @@ docker-compose -f src/main/docker/mysql.yml down
 
 ## Lancement l'application store en mode (ie profil) `prod` sur Heroku
 
-Contruire le warfile
+Cont
+```bash
+jhipster heroku
+```
+
+```
+
+```
+
+Depuis la console Heroku, vérifiez que l'application `tuto-store` est créée.
+
+
 ```bash
 ./gradlew bootWar -x test -Pprod
 ```
 > `-x test` n'exécute pas les tests
 
-Depuis la console Heroku, créez l'application `tuto-store`.
 
 ```bash
 heroku login -i
@@ -437,6 +447,16 @@ heroku config:set \
 #heroku config:unset PORT --app tuto-store
 
 heroku logs --tail --app tuto-store
+```
+
+Attendez que le serveur soit prêt
+```
+2018-12-14T11:42:05.268557+00:00 app[web.1]: ----------------------------------------------------------
+2018-12-14T11:42:05.268559+00:00 app[web.1]: Application 'store' is running! Access URLs:
+2018-12-14T11:42:05.268560+00:00 app[web.1]: Local: 		http://localhost:52037
+2018-12-14T11:42:05.268560+00:00 app[web.1]: External: 	http://172.17.78.18:52037
+2018-12-14T11:42:05.268562+00:00 app[web.1]: Profile(s): 	[prod, heroku]
+2018-12-14T11:42:05.268563+00:00 app[web.1]: ----------------------------------------------------------
 ```
 
 Affichez la page du service quand celui ci est lancé.
@@ -491,12 +511,7 @@ Détruisez la composition.
 docker-compose -f src/main/docker/app.yml down
 ```
 
-Sauvegardez l'image de l'application
-```bash
-TODO
-```
-
-## Lancement l'injecteur de de charge avec [Gatling](https://gatling.io/)
+## Lancement de l'injecteur de charge avec [Gatling](https://gatling.io/) (optionnel)
 
 Suivez la section "Performance tests" de https://www.jhipster.tech/running-tests/
 
@@ -534,7 +549,7 @@ $GATLING_HOME/bin/gatling.sh
 
 Ouvrez le rapport HTML qui est généré dans le répertoire `$GATLING_HOME/results`.
 
-### Génération de l'applications Ionic
+### Génération de l'application Ionic (optionnel)
 
 Installez Ionic et le sous-générateur pour Ionic [Plus d'information](https://github.com/oktadeveloper/generator-jhipster-ionic).
 
