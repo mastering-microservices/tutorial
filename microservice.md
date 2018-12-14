@@ -316,8 +316,6 @@ open http://localhost:5601
 ```
 Il faut préalablement modifier à la propriété `logging.logstash.enabled=true` dans le fichier `application-prod.yml` de la gateway et des microservices puis regénérer et redémarrer leurs containers.
 
-
-
 ```bash
 open http://localhost:5601
 ```
@@ -329,7 +327,7 @@ docker --version
 kubectl version
 ```
 
-
+Générez les descripteurs de déploiement Kubernetes
 ```bash
 cd github/mastering-microservices/
 mkdir kubernetes && cd kubernetes
@@ -354,14 +352,21 @@ JHipster registry detected as the service discovery and configuration provider u
 ? Choose the kubernetes service type for your edge services LoadBalancer - Let a kubernetes cloud provider automatically assign an IP
 ```
 
-Loggez vous sur votre dépôt public (hub.docker.com) or privé.
+> Remarque: Si vous souhaitez utiliser Google Container Registry pour héberger des images de conteneur dans un registre privé, vous devrez utiliser pour le nom de base du référentiel Docker défini sur gcr.io/YOUR_PROJECT_ID (gcr.io/tuto-store dans cet exercice).
+
+Jetez un coup d'oeil aux fichier générés
+```bash
+tree .
+cat ./kubectl-apply.sh
 ```
+
+Loggez vous sur votre dépôt public (hub.docker.com) or privé (gcr.io).
+```bash
 docker login
 > Login with your Docker ID to push and pull images from Docker Hub. If you don't have a Docker ID, head over to https://hub.docker.com to create one.
 > Username: masteringmicroservice
 > Password:
 ```
-
 
 Poussez les images vers votre dépôt public (hub.docker.com) or privé (Container Registry de GCP https://console.cloud.google.com/gcr/images/tuto-store?project=tuto-store).
 
@@ -616,3 +621,11 @@ Configurez le realm jhipster pour
 ### "Backend for Frontend Pattern" pour l'application Ionic store-ion
 
 Générez une seconde gateway exposant une API simplifiée de `online-store.jh` pour l'application mobile Ionic `store-ion`.
+
+## Nettoyage
+
+Pensez à arrêter et à supprimer votre application Heroku si vous ne souhaitez payer une facture surprise à la fin du mois.
+
+Pensez à arrêter et à supprimer votre cluster Google Cloud Platform si vous ne souhaitez payer une facture surprise à la fin du mois.
+
+Pensez à supprimer les images de vos containers Docker de votre dépôt public ou privé.
