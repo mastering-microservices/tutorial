@@ -1,6 +1,10 @@
 // From https://github.com/PacktPublishing/Full-Stack-Development-with-JHipster
 // License : https://github.com/PacktPublishing/Full-Stack-Development-with-JHipster/blob/master/LICENSE
 
+// =================================
+// Microservice notification
+// =================================
+
 enum NotificationType {
 	EMAIL, SMS, PARCEL
 }
@@ -15,5 +19,11 @@ entity Notification {
     productId Long required
 }
 
-service * with serviceClass
+dto Notification with mapstruct
+//angularSuffix * with store
+//search * with elasticsearch
+//filter *
+
+service Notification with serviceImpl
+paginate Notification with pagination
 microservice Notification with notification

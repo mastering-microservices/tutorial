@@ -2,12 +2,17 @@
 // License : https://github.com/PacktPublishing/Full-Stack-Development-with-JHipster/blob/master/LICENSE
 
 /* Online fashion store */
+
+// =================================
+// Microservice productorder
+// =================================
+
 entity Product {
 	name String required
-    description String
-    image ImageBlob
-    price BigDecimal required min(0)
-    size Size required
+  description String
+  image ImageBlob
+  price BigDecimal required min(0)
+  size Size required
 }
 
 enum Size {
@@ -16,19 +21,20 @@ enum Size {
 
 entity ProductCategory {
 	name String required
-    description String
+  description String
 }
 
 entity Customer {
+  userId Long required
 	firstName String required
-    lastName String required
-    gender Gender required
-    email String required
-    phone String required
-    addressLine1 String required
-    addressLine2 String
-    city String required
-    country String required
+  lastName String required
+  gender Gender required
+  email String required
+  phone String required
+  addressLine1 String required
+  addressLine2 String
+  city String required
+  country String required
 }
 
 enum Gender {
@@ -56,9 +62,9 @@ enum OrderItemStatus {
 	AVAILABLE, OUT_OF_STOCK, BACK_ORDER
 }
 
-relationship OneToOne {
-	Customer{user} to User
-}
+//relationship OneToOne {
+//	Customer{user} to User
+//}
 
 relationship ManyToOne {
 	OrderItem{product} to Product
@@ -122,13 +128,24 @@ relationship OneToMany {
 // API Gateway
 // =================================
 
-service Product, Customer, ProductOrder, OrderItem with serviceClass
-paginate Product, Customer, ProductOrder, OrderItem with pagination
+//dto Product, Customer, ProductOrder, OrderItem, ProductCategory, Invoice, Shipment, Notification with mapstruct
+//angularSuffix * with store
+//search * with elasticsearch
+//filter *
+
+// =================================
+// Microservice productorder
+// =================================
+
+//service Product, Customer, ProductOrder, OrderItem, ProductCategory with serviceImpl
+paginate Product, Customer, ProductOrder, OrderItem, ProductCategory with pagination
+microservice Product, Customer, ProductOrder, OrderItem, ProductCategory with productorder
 
 // =================================
 // Microservice invoice
 // =================================
 
+//service Invoice, Shipment with serviceClass
 paginate Invoice, Shipment with pagination
 microservice Invoice, Shipment with invoice
 
@@ -136,5 +153,6 @@ microservice Invoice, Shipment with invoice
 // Microservice notification
 // =================================
 
+//service Notification with serviceClass
 paginate Notification with pagination
 microservice Notification with notification
