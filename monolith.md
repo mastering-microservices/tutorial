@@ -47,7 +47,7 @@ jhipster
 Lancez l'application en profil `dev`.
 ```bash
 ./gradlew
-``` 
+```
 
 Loggez vous en utilisateur `admin` `admin` et parcourez les différents sous-menus d'administration (dont l'API Swagger via Swagger UI).
 ```bash
@@ -324,7 +324,7 @@ codegen html2
 ### Génération de clients
 ```bash
 # Client bash basé sur cURL
-codegen bash; (cd bash; tree .)
+# codegen bash; (cd bash; tree .)
 
 codegen typescript-angular; (cd typescript-angular; tree .)
 
@@ -346,6 +346,8 @@ codegen spring; (cd spring; tree .)
 
 codegen go-server; (cd go-server; tree .)
 ```
+
+> Remarque:  la génération du squelette du serveur Pistache C++ n'est disponible que via 
 
 ### Génération d'un plan de charge pour l'injecteur [Apache JMeter](https://jmeter.apache.org/)
 ```bash

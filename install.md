@@ -20,7 +20,7 @@ Suivez les instructions de https://github.com/creationix/nvm
 ```bash
 wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
 nvm ls-remote
-nvm install stable
+nvm install v8.11.3
 nodejs --version
 ```
 
@@ -32,7 +32,7 @@ yo --version
 
 ### JHipster Generator
 ```bash
-npm install -g generator-jhipster
+npm install -g generator-jhipster@5.1.0
 jhipster --version
 # show all the subgenerators
 ```
