@@ -204,7 +204,7 @@ HEAD="${CURL} -X HEAD --header \""$ACCEPT_JSON"\""
 # ===================================
 # Get OpenAPI2.0 specification of the API
 # -----------------------------------
-${GET} ${URL_SWAGGER} > swagger.json
+${GET} ${URL_APIDOC} > swagger.json
 
 # ===================================
 # Authentication operations
@@ -347,7 +347,7 @@ codegen spring; (cd spring; tree .)
 codegen go-server; (cd go-server; tree .)
 ```
 
-> Remarque:  la génération du squelette du serveur Pistache C++ n'est disponible que via 
+> Remarque:  la génération du squelette du serveur Pistache C++ n'est disponible que via
 
 ### Génération d'un plan de charge pour l'injecteur [Apache JMeter](https://jmeter.apache.org/)
 ```bash
@@ -395,10 +395,15 @@ Contruire le warfile
 ```
 > `-x test` n'exécute pas les tests
 
-
+Depuis la console Heroku, créez l'application `tuto-store`.
 
 ```bash
 heroku login -i
+
+heroku addons
+heroku plugins
+
+heroku plugins:install java
 
 heroku deploy:jar --jar build/libs/store-0.0.1-SNAPSHOT.war --app tuto-store
 
@@ -407,16 +412,18 @@ open https://tuto-store.herokuapp.com
 
 heroku logs --tail --app tuto-store
 # Failed to connect to mysql
+
+heroku logs --tail --app tuto-store
 ```
 
-Ajoutez le add-on MySQL
+Ajoutez le addon MySQL
 ```bash
 open https://dashboard.heroku.com/apps/tuto-store/settings
 
 heroku addons:open jawsdb  --app tuto-store
 
 heroku config --app tuto-store
-heroku config:get DATABASE_URL --app tuto-store
+heroku config:get JAWSDB_URL --app tuto-store
 ```
 
 Ajoutez les propriétés du add-on MySQL à configurer dans l'application
