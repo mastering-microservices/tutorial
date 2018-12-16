@@ -464,6 +464,33 @@ Affichez la page du service quand celui ci est lancé.
 heroku open  --app tuto-store
 ```
 
+
+Quelques commandes supplémentaires avec Heroku:
+```bash
+heroku apps
+
+heroku apps:info --app tuto-store
+
+heroku ps --app tuto-store
+
+heroku ps:scale web=2 --app tuto-store
+
+heroku releases --app tuto-store
+
+heroku drains --app tuto-store
+
+heroku maintenance:on --app tuto-store
+
+heroku maintenance:off --app tuto-store
+
+heroku maintenance:on --app tuto-store
+
+heroku stack --app tuto-store
+
+heroku status
+```
+
+
 ## Lancement l'application store en mode (ie profil) `prod` dans un container
 
 Construisez l'image du conteneur
