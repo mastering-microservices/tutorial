@@ -650,6 +650,8 @@ docker-compose -f src/main/docker/kafka.yml up -d
 docker-compose -f src/main/docker/kafka.yml logs -f
 ```
 
+Utilisez les classes `NotificationEventResource` et `NotificationEventSink` générées et modifiées à l'étape précédente.
+
 ## Fiabilisation des communication inter-microservices
 
 Installez et lancez le [sous-générateur swagger] (https://www.jhipster.tech/modules/marketplace/#/details/generator-jhipster-swagger-cli)
