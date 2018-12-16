@@ -511,11 +511,17 @@ kubectl get svc exposed-registry -n tuto-store
 
 ## Communication entre microservices par envoi asynchrone de messages
 
-L'objectif de cet exercice est d'implémenter le patron "Message Passing " entre le microservice productorder et le microservice notification. Pour cela, nous allons mettre en place un canal de communication asynchrone avec le broker RabbitMQ entre ces 2 microservices.
+L'objectif de cet exercice est d'implémenter le patron "[Message Passing](https://microservices.io/patterns/communication-style/messaging.html)" entre le microservice `productorder` et le microservice `notification`.
 
 JHipster permet une communication entre microservices par l'envoi asynchrone de messages via des brokers de messages tels que RabbitMQ ou Apache Kafka. Cette fonction fait partie de [Spring Cloud Stream](https://cloud.spring.io/spring-cloud-static/Dalston.SR5/multi/multi__introducing_spring_cloud_stream.html).
 
-Installez le générateur generator-jhipster-spring-cloud-stream
+En première partie, vous mettrez en place un canal de communication asynchrone avec le broker RabbitMQ entre ces 2 microservices.
+
+En seconde partie, vous mettrez un canal de communication asynchrone avec le broker Kafka entre ces 2 microservices.
+
+### Communication entre microservices par envoi asynchrone de messages avec RabbitMQ
+
+Installez le [générateur generator-jhipster-spring-cloud-stream](https://github.com/hipster-labs/generator-jhipster-spring-cloud-stream)
 ```bash
 yarn global add generator-jhipster-spring-cloud-stream
 ```
@@ -537,11 +543,19 @@ Répondez aux questions avec les mêmes réponses.
 
 Plusieurs classes interessantes sont générées dans les 2 projets:
 
-La classe `JhiNotificationEvent` est un exemple de message échangeable via RabbitMQ. Vous pourrez modifier et ajouter des propriétés ultérieurement.
+La classe `com.mycompany.store.config.CloudMessagingConfiguration` implémente la connection au broker RabbitMQ.
 
-La classe `NotificationEventSink` est un exemple de souscripteur de messages. Les messages recus sont stockés dans une liste (non persistante). Le topic de souscription est (par défaut) défini dans la propriété `spring.cloud.stream.bindings.input.destination` (`application-*.yml`)
+Les propriétés suivantes sont ajoutées dans les fichiers de configuration `src/main/resources/config/application-*.yml` :
+* `spring.cloud.stream.default.contentType`
+* `spring.cloud.stream.bindings.input.destination`
+* `spring.cloud.stream.bindings.output.destination`
+* `spring.cloud.stream.bindings.rabbit.bindings.output.producer`
 
-La classe `NotificationEventResource` est un exemple de ressource
+La classe `com.mycompany.store.domain.JhiNotificationEvent` est un exemple de message échangeable via RabbitMQ. Vous pourrez modifier et ajouter des propriétés ultérieurement.
+
+La classe `com.mycompany.store.service.stream.NotificationEventSink` est un exemple de souscripteur de messages. Les messages recus sont stockés dans une liste (non persistante). Le topic de souscription est (par défaut) défini dans la propriété `spring.cloud.stream.bindings.input.destination` (`application-*.yml`)
+
+La classe `com.mycompany.store.web.rest.NotificationEventResource` est un exemple de ressource
 * avec une opération POST pour publier un message sur le topic (par défaut) défini dans la propriété `spring.cloud.stream.bindings.output.destination` (`application-*.yml`)
 * avec une opération GET pour récupérer la liste non persistance des messages recus du topic
 
@@ -589,10 +603,54 @@ Pour le microservice `notification`:
 * Vous pouvez également changer le nom du topic dans la propriété `spring.cloud.stream.bindings.input.destination` (`application-*.yml`).
 * Vous pouvez modifier et ajouter des propriétés à la classe `JhiNotificationEvent` dans les 2 projets. Vous pouvez persister les messages reçus dans la base MongoDB en créant des entités `Notification`.
 
-### References
-* https://github.com/hipster-labs/generator-jhipster-spring-cloud-stream
+
+### Communication entre microservices par envoi asynchrone de messages avec Kafka
 * https://www.jhipster.tech/using-kafka/
 
+Regénérez les 2 microservices en sélectionnant `Asynchronous messages using Apache Kafka` lors de la génération.
+
+
+```bash
+mkdir -p ~/github/mastering-microservices/notification_kafka
+cd ~/github/mastering-microservices/notification_kafka
+jhipster
+```
+
+```
+? Which *type* of application would you like to create? Microservice application
+? What is the base name of your application? notification
+? As you are running in a microservice architecture, on which port would like your server to run? It should be unique to avoid port conflicts. 8083
+? What is your default Java package name? com.mycompany.store
+? Which service discovery server do you want to use? JHipster Registry (uses Eureka, provides Spring Cloud Config support and monitoring dashboards)
+? Which *type* of authentication would you like to use? JWT authentication (stateless, with a token)
+? Which *type* of database would you like to use? MongoDB
+? Do you want to use the Spring cache abstraction? Yes, with the Hazelcast implementation (distributedcache, for multiple nodes)
+? Would you like to use Maven or Gradle for building the backend? Gradle
+? Which other technologies would you like to use? Asynchronous messages using Apache Kafka
+? Would you like to enable internationalization support? Yes
+? Please choose the native language of the application English
+? Please choose additional languages to install French
+? Besides JUnit and Jest, which testing frameworks would you like to use? Gatling, Cucumber
+? Would you like to install other generators from the JHipster Marketplace? No
+```
+
+```bash
+mkdir -p ~/github/mastering-microservices/productorder_kafka
+cd ~/github/mastering-microservices/productorder_kafka
+jhipster
+```
+
+La génération crée la classe `com.mycompany.store.config.MessagingConfiguration` et ajoute les 3 propriétés suivantes dans les fichiers de configuration `src/main/resources/config/application-*.yml` :
+* `spring.cloud.stream.kafka.binder.brokers`
+* `spring.cloud.stream.kafka.binderzk-nodes`
+* `spring.cloud.stream:.bindings.output.destination`
+
+Lancez de Kafka depuis un des 2 projets (`notification` par exemple) sur Term 1:
+```bash
+cd ~/github/mastering-microservices/notification_kafka
+docker-compose -f src/main/docker/kafka.yml up -d
+docker-compose -f src/main/docker/kafka.yml logs -f
+```
 
 ## Fiabilisation des communication inter-microservices
 
