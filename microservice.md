@@ -581,11 +581,11 @@ Afficher les messages recus via l’interface Swagger UI (disponible depuis `Adm
 Vérifiez la non persistance des messages en redémarrant le micro-service `notification`. L'opération GET retourne une liste vide.
 
 Pour le microservice `productorder`:
-* Vous pouvez modifier les sources du microservice `productorder` les lignes de code relatives à la reception des messages (opération `GET` de la classe `NotificationEventResource` et la classe `NotificationEventSink`).
+* Vous pouvez éliminer des sources du microservice `productorder`, les lignes de code relatives à la reception des messages (opération `GET` de la classe `NotificationEventResource` et la classe `NotificationEventSink`).
 * Vous pouvez également changer le nom du topic dans la propriété `spring.cloud.stream.bindings.output.destination` (`application-*.yml`).
 
 Pour le microservice `notification`:
-* Vous pouvez modifier les sources du microservice `notification` les lignes de code relatives à l'émission des messages (opération `POST` de la classe `NotificationEventResource`).
+* Vous pouvez éliminer des sources du microservice `notification`, les lignes de code relatives à l'émission des messages (opération `POST` de la classe `NotificationEventResource`).
 * Vous pouvez également changer le nom du topic dans la propriété `spring.cloud.stream.bindings.input.destination` (`application-*.yml`).
 * Vous pouvez modifier et ajouter des propriétés à la classe `JhiNotificationEvent` dans les 2 projets. Vous pouvez persister les messages reçus dans la base MongoDB en créant des entités `Notification`.
 
