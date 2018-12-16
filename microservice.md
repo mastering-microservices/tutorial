@@ -17,6 +17,8 @@ L'infrastructure de base est constitué de :
 * d'un microservice invoice (utilisant une base de données postgres)
 * d'un microservice notification (utilisant une base de données mongodb)
 
+Le frontend permet d'accéder à l'ensemble des entités est servi par l'API Gateway.
+
 ### Création de la gateway (vierge)
 ```bash
 mkdir -p ~/github/mastering-microservices/gateway
@@ -390,7 +392,7 @@ kubectl version
 
 Générez les descripteurs de déploiement Kubernetes
 ```bash
-cd github/mastering-microservices/
+cd ~/github/mastering-microservices/
 mkdir kubernetes && cd kubernetes
 jhipster kubernetes
 ```
@@ -509,6 +511,8 @@ kubectl get svc exposed-registry -n tuto-store
 
 ## Communication entre microservices par envoi asynchrone de messages
 
+L'objectif de cet exercice est d'implémenter le patron "Message Passing " entre le microservice productorder et le microservice notification. Pour cela, nous allons mettre en place un canal de communication asynchrone avec le broker RabbitMQ entre ces 2 microservices.
+
 JHipster permet une communication entre microservices par l'envoi asynchrone de messages via des brokers de messages tels que RabbitMQ ou Apache Kafka. Cette fonction fait partie de [Spring Cloud Stream](https://cloud.spring.io/spring-cloud-static/Dalston.SR5/multi/multi__introducing_spring_cloud_stream.html).
 
 Installez le générateur generator-jhipster-spring-cloud-stream
@@ -518,32 +522,49 @@ yarn global add generator-jhipster-spring-cloud-stream
 
 Lancez le générateur generator-jhipster-spring-cloud-stream avec le microservice `notification`
 ```bash
-
-cd notification
+cd ~/github/mastering-microservices/notification
 yo jhipster-spring-cloud-stream
 git status
 ```
 
-Plusieurs classes interessantes sont générées:
+Lancez le générateur generator-jhipster-spring-cloud-stream avec le microservice `productorder`
+```bash
+cd ~/github/mastering-microservices/productorder
+yo jhipster-spring-cloud-stream
+git status
+```
+Répondez aux questions avec les mêmes réponses.
 
-La classe `JhiNotificationEvent` est un exemple de message échangeable via RabbitMQ
+Plusieurs classes interessantes sont générées dans les 2 projets:
+
+La classe `JhiNotificationEvent` est un exemple de message échangeable via RabbitMQ. Vous pourrez modifier et ajouter des propriétés ultérieurement.
 
 La classe `NotificationEventSink` est un exemple de souscripteur de messages. Les messages recus sont stockés dans une liste (non persistante). Le topic de souscription est (par défaut) défini dans la propriété `spring.cloud.stream.bindings.input.destination` (`application-*.yml`)
 
-La classe NotificationEventResource est un exemple de ressource
+La classe `NotificationEventResource` est un exemple de ressource
 * avec une opération POST pour publier un message sur le topic (par défaut) défini dans la propriété `spring.cloud.stream.bindings.output.destination` (`application-*.yml`)
 * avec une opération GET pour récupérer la liste non persistance des messages recus du topic
 
-Lancez de RabbitMQ sur Term 1:
+Lancez de RabbitMQ depuis un des 2 projets (`notification` par exemple) sur Term 1:
 ```bash
+cd ~/github/mastering-microservices/notification
 docker-compose -f src/main/docker/rabbitmq.yml up -d
 docker-compose -f src/main/docker/rabbitmq.yml logs -f
 ```
 
-Lancez le micro-service `notification` sur Term 1:
+
+Lancez le micro-service `notification` sur Term 2:
 ```bash
+~/github/mastering-microservices/notification
 ./gradlew
 ```
+
+Lancez le micro-service `productorder` sur Term 3:
+```bash
+~/github/mastering-microservices/notification
+./gradlew
+```
+
 
 Ouvrez la console de management de Rabbitmq (avec les crententials par défaut `guest` `guest`)
 
@@ -551,11 +572,19 @@ Ouvrez la console de management de Rabbitmq (avec les crententials par défaut `
 open http://localhost:15672/#/
 ```
 
-Testez l’envoi de messages via l’interface Swagger UI (disponible depuis `Administration > API > notification`)
+Testez l’envoi de messages via l’interface Swagger UI (disponible depuis `Administration > API > productorder`)
+
+Afficher les messages recus via l’interface Swagger UI (disponible depuis `Administration > API > notification`)
 
 > NB: les messages peuvent être sérialisés dans un format comme JSON pour être échangés avec des micro-services non-Java. [Plus de détails](https://cloud.spring.io/spring-cloud-static/Dalston.SR5/multi/multi_contenttypemanagement.html)
 
 Vérifiez la non persistance des messages en redémarrant le micro-service `notification`. L'opération GET retourne une liste vide.
+
+Vous pouvez modifier les sources du microservice `productorder` les lignes de code relative à la reception des messages (opération `GET` de la classe `NotificationEventResource` et la classe `NotificationEventSink`). Vous pouvez également changer le nom du topic dans la propriété `spring.cloud.stream.bindings.output.destination` (`application-*.yml`).
+
+Vous pouvez modifier les sources du microservice `notification` les lignes de code relative à l'émission des messages (opération `POST` de la classe `NotificationEventResource`). Vous pouvez également changer le nom du topic dans la propriété `spring.cloud.stream.bindings.input.destination` (`application-*.yml`).  
+
+Vous pouvez modifier et ajouter des propriétés à la classe `JhiNotificationEvent` dans les 2 projets. Vous pouvez persister les messages reçus dans la base MongoDB en créant des entités `Notification`.
 
 ### References
 * https://github.com/hipster-labs/generator-jhipster-spring-cloud-stream
@@ -584,6 +613,8 @@ tree src/main/java/com/mycompany/store/client/
 [Plus d'information sur Feign](https://www.jhipster.tech/using-uaa/#inter-service-communication)
 
 ## Gestion et authenfication OAuth2 des utilisateurs
+
+Plusieurs gestionnaires d'authentification des utilisateurs sont proposés par le générateur JHipster. https://www.jhipster.tech/security/
 
 ### Gestion et authenfication OAuth2 des utilisateurs avec JHipster UAA
 
