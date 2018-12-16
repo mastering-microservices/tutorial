@@ -526,14 +526,14 @@ Installez le [générateur generator-jhipster-spring-cloud-stream](https://githu
 yarn global add generator-jhipster-spring-cloud-stream
 ```
 
-Lancez le générateur generator-jhipster-spring-cloud-stream avec le microservice `notification`
+Lancez le générateur `generator-jhipster-spring-cloud-stream` avec le microservice `notification`
 ```bash
 cd ~/github/mastering-microservices/notification
 yo jhipster-spring-cloud-stream
 git status
 ```
 
-Lancez le générateur generator-jhipster-spring-cloud-stream avec le microservice `productorder`
+Lancez le générateur `generator-jhipster-spring-cloud-stream` avec le microservice `productorder`
 ```bash
 cd ~/github/mastering-microservices/productorder
 yo jhipster-spring-cloud-stream
@@ -541,7 +541,7 @@ git status
 ```
 Répondez aux questions avec les mêmes réponses.
 
-Plusieurs classes interessantes sont générées dans les 2 projets:
+Plusieurs classes intéressantes sont générées dans les 2 projets:
 
 La classe `com.mycompany.store.config.CloudMessagingConfiguration` implémente la connection au broker RabbitMQ.
 
@@ -566,7 +566,6 @@ docker-compose -f src/main/docker/rabbitmq.yml up -d
 docker-compose -f src/main/docker/rabbitmq.yml logs -f
 ```
 
-
 Lancez le micro-service `notification` sur Term 2:
 ```bash
 ~/github/mastering-microservices/notification
@@ -579,8 +578,7 @@ Lancez le micro-service `productorder` sur Term 3:
 ./gradlew
 ```
 
-
-Ouvrez la console de management de Rabbitmq (avec les crententials par défaut `guest` `guest`)
+Ouvrez la console de management de RabbitMQ (avec les crententials par défaut `guest` `guest`)
 
 ```bash
 open http://localhost:15672/#/
