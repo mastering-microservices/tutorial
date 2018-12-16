@@ -576,7 +576,7 @@ Testez l’envoi de messages via l’interface Swagger UI (disponible depuis `Ad
 
 Afficher les messages recus via l’interface Swagger UI (disponible depuis `Administration > API > notification`)
 
-> NB: les messages peuvent être sérialisés dans un format comme JSON pour être échangés avec des micro-services non-Java. [Plus de détails](https://cloud.spring.io/spring-cloud-static/Dalston.SR5/multi/multi_contenttypemanagement.html)
+> NB: les messages peuvent être sérialisés dans différents formats comme Java Serialization, JSON, Thrift, Protobuf ... pour être échangés avec des micro-services Java et non-Java. [Plus de détails](https://cloud.spring.io/spring-cloud-static/Dalston.SR5/multi/multi_contenttypemanagement.html)
 
 Vérifiez la non persistance des messages en redémarrant le micro-service `notification`. L'opération GET retourne une liste vide.
 
