@@ -1,4 +1,4 @@
-# Tutoriel sur les microservices :: Service Mesh avec Istio
+# Tutoriel sur les microservices avec JHipster :: Service Mesh avec Istio
 
 L'objectif de cette partie est la mise en place de microservices avec Istio.
 
@@ -13,4 +13,7 @@ L'objectif de cette partie est la mise en place de microservices avec Istio.
 Coming soon
 
 ## Références
+* [Architectures Istio générées par JHipster](https://blog.ippon.fr/2018/11/21/architectures-istio-dans-jhipster/)
+* [How to set up JHipster microservices with Istio service mesh on Kubernetes](https://medium.freecodecamp.org/jhipster-microservices-with-istio-service-mesh-on-kubernetes-a7d0158ba9a3)
 * [Istio in action](https://www.manning.com/books/istio-in-action) [source code](https://github.com/istioinaction/book-source-code)
+*
