@@ -7,6 +7,7 @@ L'objectif de cette partie est la mise en place de microservices avec l'infrastr
 * [Installation](./install.md)
 * [Création d'un monolithe](./monolith.md)
 * Création d'une architecture microservices
+* [Service Mesh avec Istio](./istio.md)
 * [Bonus track](./bonus.md)
 
 ## Création de la gateway et des microservices
