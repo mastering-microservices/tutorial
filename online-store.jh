@@ -3,13 +3,19 @@
 
 /* Online fashion store */
 
+// SHA1 is 160 bits-long (20 bytes)
+SHA_LEN = 40
+IMAGE_MAX_BYTES = 5000000
+
 /** Product sold by the Online store */
 entity Product {
     name String required
     description String
     price BigDecimal required min(0)
     size Size required
-    image ImageBlob
+    image ImageBlob maxbytes(IMAGE_MAX_BYTES)
+    imageSha1 String minlength(SHA_LEN) maxlength(SHA_LEN) pattern(/[a-f0-9]{40}/)
+    imageCdnUrl String
 }
 
 enum Size {
@@ -97,5 +103,21 @@ relationship OneToMany {
    ProductCategory{product} to Product{productCategory(name)}
 }
 
-service * with serviceClass
-paginate Product, Customer, ProductOrder, Invoice, Shipment, OrderItem with pagination
+
+// Set pagination options (pagination, pager, infinite-scroll)
+paginate * with pagination
+
+// Use Data Transfert Objects (DTO)
+dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl
+
+// Set an angular suffix
+//angularSuffix * with onlineshop
+
+// Set search
+//search * with elasticsearch
+
+//Set filtering
+filter *
