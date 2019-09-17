@@ -12,13 +12,13 @@ entity Product {
     name String required
     description String
     price BigDecimal required min(0)
-    size Size required
+    size ProductSize required
     image ImageBlob maxbytes(IMAGE_MAX_BYTES)
     imageSha1 String minlength(SHA_LEN) maxlength(SHA_LEN) pattern(/[a-f0-9]{40}/)
     imageCdnUrl String
 }
 
-enum Size {
+enum ProductSize {
     S, M, L, XL, XXL
 }
 
@@ -120,4 +120,4 @@ service all with serviceImpl
 //search * with elasticsearch
 
 //Set filtering
-filter *
+//filter *
