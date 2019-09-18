@@ -13,8 +13,12 @@ entity Product {
     description String
     price BigDecimal required min(0)
     size ProductSize required
+    colors String pattern(/^([a-z]+,)*[a-z]+$/) 
+    /** For uploading the image */
     image ImageBlob maxbytes(IMAGE_MAX_BYTES)
+    /** For caching with HTTP header Etag and If-None-Match */
     imageSha1 String minlength(SHA_LEN) maxlength(SHA_LEN) pattern(/[a-f0-9]{40}/)
+    /** For the content delivery network */
     imageCdnUrl String
 }
 
