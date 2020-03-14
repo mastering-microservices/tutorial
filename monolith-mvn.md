@@ -130,7 +130,7 @@ Lancez l'analyseur SonarQube
 Visualisez le rapport de l'analyseur SonarQube
 ```bash
 open http://localhost:9000
-open http://localhost:9000/dashboard?id=com.mycompany.store%3Astore
+open http://localhost:9000/dashboard?id=com.VOTRE_NOM_PRENOM.store
 ```
 
 ## Mise en place du CI/CD
