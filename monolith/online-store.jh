@@ -9,8 +9,10 @@ IMAGE_MAX_BYTES = 5000000
 
 /** Product sold by the Online store */
 entity Product {
+    sku String required /* TODO pattern */
+    upc String required /* TODO pattern */
     name String required
-    description String
+    description TextBlob
     price BigDecimal required min(0)
     size ProductSize required
     colors String pattern(/^([a-z]+,)*[a-z]+$/) 
@@ -19,11 +21,15 @@ entity Product {
     /** For caching with HTTP header Etag and If-None-Match */
     imageSha1 String minlength(SHA_LEN) maxlength(SHA_LEN) pattern(/[a-f0-9]{40}/)
     /** For the content delivery network */
-    imageCdnUrl String
+    imageCdnUrl String /* TODO pattern */
+    /** For caching with HTTP header Etag and If-None-Match */
+    thumbnailSha1 String minlength(SHA_LEN) maxlength(SHA_LEN) pattern(/[a-f0-9]{40}/)
+    /** For the content delivery network */
+    thumbnailCdnUrl String /* TODO pattern */
 }
 
-enum ProductSize {
-    S, M, L, XL, XXL
+enum Size {
+	XS, S, M, L, XL, XXL
 }
 
 entity ProductCategory {
@@ -100,16 +106,19 @@ relationship ManyToOne {
 }
 
 relationship OneToMany {
-   Customer{order} to ProductOrder{customer(email) required},
-   ProductOrder{orderItem} to OrderItem{order(code) required} ,
-   ProductOrder{invoice} to Invoice{order(code) required},
-   Invoice{shipment} to Shipment{invoice(code) required},
+   Customer{order} to ProductOrder{customer(email) required}
+   ProductOrder{orderItem} to OrderItem{order(code) required}
+   ProductOrder{invoice} to Invoice{order(code) required}
+   Invoice{shipment} to Shipment{invoice(code) required}
    ProductCategory{product} to Product{productCategory(name)}
 }
 
 
 // Set pagination options (pagination, pager, infinite-scroll)
-paginate * with pagination
+paginate Invoice, Shipment with infinite-scroll
+paginate Notification with infinite-scroll
+paginate Product with infinite-scroll
+paginate Customer, ProductOrder, OrderItem, ProductCategory with pagination
 
 // Use Data Transfert Objects (DTO)
 dto * with mapstruct

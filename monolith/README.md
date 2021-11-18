@@ -1,13 +1,4 @@
-# Tutoriel sur les microservices avec JHipster :: Démarrage avec un monolithe (version courte avec Maven et Postgres)
-
-## Plan
-* [Sommaire](./README.md)
-* [Installation](./install.md)
-* [Création d'un monolithe (avec Gradle)](./monolith.md)
-* [Création d'un monolithe (version courte avec Maven)](./monolith-mvn.md)
-* [Création d'une architecture microservices](./microservice.md)
-* [Service Mesh avec Istio](./istio.md)
-* [Bonus track](./bonus.md)
+# Tutoriel sur les microservices avec JHipster :: Démarrage avec un monolithe
 
 ## Recupération des fichiers
 ```bash
@@ -23,18 +14,18 @@ jhipster
 ```
 ```
 ? Which *type* of application would you like to create? Monolithic application (recommended for simple projects)
-? What is the base name of your application? storeNOMPRENOM
-? What is your default Java package name? com.VOTRE_NOM_PRENOM.store
+? What is the base name of your application? store
+? What is your default Java package name? com.mycompany.store
 ? Do you want to use the JHipster Registry to configure, monitor and scale your application? No
 ? Which *type* of authentication would you like to use? JWT authentication (stateless, with a token)
 ? Which *type* of database would you like to use? SQL (H2, MySQL, MariaDB, PostgreSQL, Oracle, MSSQL)
-? Which *production* database would you like to use? PostgreSQL
+? Which *production* database would you like to use? MySQL
 ? Which *development* database would you like to use? H2 with disk-based persistence
 ? Do you want to use the Spring cache abstraction? Yes, with the Ehcache implementation (local cache, for a single node)
 ? Do you want to use Hibernate 2nd level cache? Yes
-? Would you like to use Maven or Gradle for building the backend? Maven
+? Would you like to use Maven or Gradle for building the backend? Gradle
 ? Which other technologies would you like to use?
-? Which *Framework* would you like to use for the client? Angular X
+? Which *Framework* would you like to use for the client? Angular 6
 ? Would you like to enable *SASS* support using the LibSass stylesheet preprocessor? Yes
 ? Would you like to enable internationalization support? Yes
 ? Please choose the native language of the application English
@@ -48,7 +39,7 @@ jhipster
 
 Lancez l'application en profil `dev`.
 ```bash
-./mvnw
+./gradlew
 ```
 
 Loggez vous en utilisateur `admin` `admin` et parcourez les différents sous-menus d'administration (dont l'API Swagger via Swagger UI).
@@ -68,7 +59,7 @@ jhipster import-jdl ../tutorial/online-store.jh
 
 Lancez l'application en profil `dev`.
 ```bash
-./mvnw
+./gradlew
 ```
 
 Ouvrez l'application dans un browser avec le rafraissement automatique en cas de modification des sources du frontend
@@ -92,7 +83,7 @@ open http://localhost:8080
 
 ```bash
 cd  ~/github/mastering-microservices/online-store
-./mvnw test
+./gradlew test
 ```
 
 ### Pour le frontend
@@ -103,7 +94,7 @@ yarn test
 Pour les tests end-to-end, lancez le backend depuis un terminal
 ```bash
 cd  ~/github/mastering-microservices/online-store
-./mvnw
+./gradlew
 ```
 
 Depuis un autre terminal, lancez le test e2e
@@ -124,13 +115,13 @@ Attendez qu'il soit démarré et prêt au service.
 
 Lancez l'analyseur SonarQube
 ```bash
-./mvnw sonarqube
+./gradlew sonarqube
 ```
 
 Visualisez le rapport de l'analyseur SonarQube
 ```bash
 open http://localhost:9000
-open http://localhost:9000/dashboard?id=com.VOTRE_NOM_PRENOM.store
+open http://localhost:9000/dashboard?id=com.mycompany.store%3Astore
 ```
 
 ## Mise en place du CI/CD
@@ -187,8 +178,8 @@ URL=http://localhost:$PORT
 
 # PROD
 #PORT=443
-#URL=https://storeNOMPRENOM.VOTRE_NOM_PRENOM.com:$PORT
-#URL=https://storeNOMPRENOM.herukoapp.com:$PORT
+#URL=https://store.mycompany.com:$PORT
+#URL=https://microservice-tutorial-store.herukoapp.com:$PORT
 
 # Doc
 URL_APIDOC=${URL}/v2/api-docs
@@ -326,27 +317,27 @@ codegen html2
 ### Génération de clients
 ```bash
 # Client bash basé sur cURL
-# codegen bash; (cd bash; tree . ; cloc .)
+# codegen bash; (cd bash; tree .)
 
-codegen typescript-angular; (cd typescript-angular; tree . ; cloc .)
+codegen typescript-angular; (cd typescript-angular; tree .)
 
-codegen python; (cd python; tree . ; cloc .)
+codegen python; (cd python; tree .)
 
-codegen cpprest; (cd cpprest; tree . ; cloc .)
+codegen cpprest; (cd cpprest; tree .)
 
-codegen php; (cd php; tree . ; cloc .)
+codegen php; (cd php; tree .)
 
 ```
 
 #### Génération de squelettes de serveurs
 ```bash
-codegen python-flask; (cd python-flask; tree . ; cloc .)
+codegen python-flask; (cd python-flask; tree .)
 
-codegen nodejs-server; (cd nodejs-server; tree . ; cloc .)
+codegen nodejs-server; (cd nodejs-server; tree .)
 
-codegen spring; (cd spring; tree . ; cloc .)
+codegen spring; (cd spring; tree .)
 
-codegen go-server; (cd go-server; tree . ; cloc .)
+codegen go-server; (cd go-server; tree .)
 ```
 
 > Remarque:  la génération du squelette du serveur Pistache C++ n'est disponible que via
@@ -362,20 +353,20 @@ codegen jmeter; (cd jmeter; ls -al)
 Construisez le WAR de l'application
 ```bash
 cd  ~/github/mastering-microservices/online-store
-./mvnw bootWar -Pprod
+./gradlew bootWar -Pprod
 ls -al build/libs/*.war
 ```
 
-Depuis un autre terminal, lancez la composition docker-compose qui comporte seulement le gestionnaire de base de données' (`store-postgresql`).
+Depuis un autre terminal, lancez la composition docker-compose qui comporte seulement le gestionnaire de base de données' (`store-mysql`).
 ```bash
 cd  ~/github/mastering-microservices/online-store
-docker-compose -f src/main/docker/postgresql.yml up -d
+docker-compose -f src/main/docker/mysql.yml up -d
 ```
 
 Depuis un autre terminal, visualisez la console du service
 ```bash
 cd  ~/github/mastering-microservices/online-store
-docker-compose -f src/main/docker/postgresql.yml logs -f
+docker-compose -f src/main/docker/mysql.yml logs -f
 ```
 
 Lancez l'application
@@ -383,10 +374,10 @@ Lancez l'application
 java -jar build/libs/store-0.0.1-SNAPSHOT.war
 ```
 
-Finalement, détruisez le gestionnaire de base de données' (`store-postgresql`).
+Finalement, détruisez le gestionnaire de base de données' (`store-mysql`).
 ```bash
 cd  ~/github/mastering-microservices/online-store
-docker-compose -f src/main/docker/postgresql.yml down
+docker-compose -f src/main/docker/mysql.yml down
 ```
 
 ## Lancement l'application store en mode (ie profil) `prod` sur Heroku
@@ -400,11 +391,11 @@ jhipster heroku
 
 ```
 
-Depuis la console Heroku, vérifiez que l'application `tuto-store-VOTRE_NOM_PRENOM` est créée.
+Depuis la console Heroku, vérifiez que l'application `tuto-store` est créée.
 
 
 ```bash
-./mvnw bootWar -x test -Pprod
+./gradlew bootWar -x test -Pprod
 ```
 > `-x test` n'exécute pas les tests
 
@@ -417,21 +408,44 @@ heroku plugins
 
 heroku plugins:install java
 
-heroku deploy:jar --jar build/libs/store-0.0.1-SNAPSHOT.war --app tuto-store-VOTRE_NOM_PRENOM
+heroku deploy:jar --jar build/libs/store-0.0.1-SNAPSHOT.war --app tuto-store
 
-heroku open  --app tuto-store-VOTRE_NOM_PRENOM
+heroku open  --app tuto-store
 open https://tuto-store.herokuapp.com
 
-heroku logs --tail --app tuto-store-VOTRE_NOM_PRENOM
-# Failed to connect to postgresql
+heroku logs --tail --app tuto-store
+# Failed to connect to mysql
 
-heroku logs --tail --app tuto-store-VOTRE_NOM_PRENOM
+heroku logs --tail --app tuto-store
+```
+
+Ajoutez le addon MySQL
+```bash
+open https://dashboard.heroku.com/apps/tuto-store/settings
+
+heroku addons:open jawsdb  --app tuto-store
+
+heroku config --app tuto-store
+heroku config:get JAWSDB_URL --app tuto-store
+```
+
+Ajoutez les propriétés du add-on MySQL à configurer dans l'application
+```bash
+heroku config:set \
+   JDBC_DATABASE_URL=jdbc:mysql://xxxxxxxx.xxxxxxxx.eu-west-1.rds.amazonaws.com:3306/dddddddddddd?verifyServerCertificate=false  \
+   JDBC_DATABASE_USERNAME=uuuuuuuuuu  \
+   JDBC_DATABASE_PASSWORD=pppppppppp  \
+ --app tuto-store
+
+#heroku config:unset PORT --app tuto-store
+
+heroku logs --tail --app tuto-store
 ```
 
 Attendez que le serveur soit prêt
 ```
 2018-12-14T11:42:05.268557+00:00 app[web.1]: ----------------------------------------------------------
-2018-12-14T11:42:05.268559+00:00 app[web.1]: Application 'storeNOMPRENOM' is running! Access URLs:
+2018-12-14T11:42:05.268559+00:00 app[web.1]: Application 'store' is running! Access URLs:
 2018-12-14T11:42:05.268560+00:00 app[web.1]: Local: 		http://localhost:52037
 2018-12-14T11:42:05.268560+00:00 app[web.1]: External: 	http://172.17.78.18:52037
 2018-12-14T11:42:05.268562+00:00 app[web.1]: Profile(s): 	[prod, heroku]
@@ -440,7 +454,7 @@ Attendez que le serveur soit prêt
 
 Affichez la page du service quand celui ci est lancé.
 ```bash
-heroku open  --app tuto-store-VOTRE_NOM_PRENOM
+heroku open  --app tuto-store
 ```
 
 
@@ -448,23 +462,23 @@ Quelques commandes supplémentaires avec Heroku:
 ```bash
 heroku apps
 
-heroku apps:info --app tuto-store-VOTRE_NOM_PRENOM
+heroku apps:info --app tuto-store
 
-heroku ps --app tuto-store-VOTRE_NOM_PRENOM
+heroku ps --app tuto-store
 
-heroku ps:scale web=2 --app tuto-store-VOTRE_NOM_PRENOM
+heroku ps:scale web=2 --app tuto-store
 
-heroku releases --app tuto-store-VOTRE_NOM_PRENOM
+heroku releases --app tuto-store
 
-heroku drains --app tuto-store-VOTRE_NOM_PRENOM
+heroku drains --app tuto-store
 
-heroku maintenance:on --app tuto-store-VOTRE_NOM_PRENOM
+heroku maintenance:on --app tuto-store
 
-heroku maintenance:off --app tuto-store-VOTRE_NOM_PRENOM
+heroku maintenance:off --app tuto-store
 
-heroku maintenance:on --app tuto-store-VOTRE_NOM_PRENOM
+heroku maintenance:on --app tuto-store
 
-heroku stack --app tuto-store-VOTRE_NOM_PRENOM
+heroku stack --app tuto-store
 
 heroku status
 ```
@@ -474,11 +488,11 @@ heroku status
 
 Construisez l'image du conteneur
 ```bash
-./mvnw bootWar -Pprod buildDocker
+./gradlew bootWar -Pprod buildDocker
 docker images | grep store
 ```
 
-Lancez la composition docker-compose qui comporte l'application (`store-app`) et le gestionnaire de base de données (`store-postgresql`).
+Lancez la composition docker-compose qui comporte l'application (`store-app`) et le gestionnaire de base de données (`store-mysql`).
 ```bash
 docker-compose -f src/main/docker/app.yml up -d
 ```
@@ -498,15 +512,15 @@ Redémarrez le service `store-app` de la composition
 docker-compose -f src/main/docker/app.yml start store
 ```
 
-Arrêtez le service `store-postgresql` de la composition
+Arrêtez le service `store-mysql` de la composition
 ```bash
-docker-compose -f src/main/docker/app.yml stop postgresql
+docker-compose -f src/main/docker/app.yml stop mysql
 ```
 > Que se passe t'il ?
 
-Redémarrez le service `store-postgresql` de la composition
+Redémarrez le service `store-mysql` de la composition
 ```bash
-docker-compose -f src/main/docker/app.yml start postgresql
+docker-compose -f src/main/docker/app.yml start mysql
 ```
 > Que se passe t'il ?
 
@@ -517,22 +531,7 @@ Détruisez la composition.
 docker-compose -f src/main/docker/app.yml down
 ```
 
-## Lancement de la supervision 
-
-Lancez la composition des conteneurs de supervision
-```bash
-cd src/main/docker
-docker-compose -f monitoring.yml up -d
-docker-compose -f monitoring.yml logs -f
-```
-
-Lancez la console Grafana (le login est admin admin)
-```bash
-open http://localhost:3000
-```
-Laissez la supervision fonctionner.
-
-## Lancement de l'injecteur de charge avec [Gatling](https://gatling.io/)
+## Lancement de l'injecteur de charge avec [Gatling](https://gatling.io/) (optionnel)
 
 Suivez la section "Performance tests" de https://www.jhipster.tech/running-tests/
 
@@ -547,7 +546,7 @@ Lancez le recorder depuis un terminal
 GATLING_HOME=~/github/mastering-microservices/gatling-charts-highcharts-bundle-2.3.1
 cd  ~/github/mastering-microservices/online-store
 cd src/test/gatling
-tree . ; cloc .
+tree .
 $GATLING_HOME/bin/recorder.sh
 
 $GATLING_HOME/bin/gatling.sh
@@ -568,7 +567,45 @@ cd src/test/gatling
 $GATLING_HOME/bin/gatling.sh
 ```
 
-Observez les graphes de la console Grafana. Que se passe t'il ?
+Ouvrez le rapport HTML qui est généré dans le répertoire `$GATLING_HOME/results`.
 
-Ouvrez le rapport HTML qui est généré dans le répertoire `$GATLING_HOME/results`. Qu'en pensez vous ?
+### Génération de l'application Ionic (optionnel)
 
+Installez Ionic et le sous-générateur pour Ionic [Plus d'information](https://github.com/oktadeveloper/generator-jhipster-ionic).
+
+```bash
+npm install -g ionic
+npm install -g generator-jhipster-ionic
+```
+
+```bash
+yo jhipster-ionic
+```
+```
+Welcome to the Ionic Module for JHipster! v3.2.0
+
+? What do you want to name your Ionic application? store-ion
+? Enter the directory where your JHipster app is located: online-store
+
+Creating Ionic app with command: ionic start store-ion oktadeveloper/jhipster
+✔ Preparing directory ./store-ion - done!
+✔ Looking up starter - done!
+✔ Downloading and extracting oktadeveloper/jhipster starter - done!
+? Integrate your new app with Cordova to target native iOS and Android? Yes
+> ionic integrations enable cordova --quiet
+✔ Downloading integration cordova - done!
+✔ Copying integrations files to project - done!
+[OK] Integration cordova added!
+```
+
+Ajoutez les cartes pour les entités `ProductCategory` et `Product`.
+```bash
+cd store-ion
+yo jhipster-ionic:entity ProductCategory
+yo jhipster-ionic:entity Product
+```
+
+Lancez l'application dans un navigateur
+```bash
+ionic serve
+```

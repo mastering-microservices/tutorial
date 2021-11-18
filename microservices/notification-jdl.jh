@@ -25,5 +25,5 @@ dto Notification with mapstruct
 //filter *
 
 service Notification with serviceImpl
-paginate Notification with pagination
+paginate Notification with infinite-scroll
 microservice Notification with notification

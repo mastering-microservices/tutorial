@@ -1,13 +1,5 @@
 # Tutoriel sur les microservices avec JHipster :: Installation
 
-## Plan
-* [Sommaire](./README.md)
-* Installation
-* [Création d'un monolithe](./monolith.md)
-* [Création d'une architecture microservices](./microservice.md)
-* [Service Mesh avec Istio](./istio.md)
-* [Bonus track](./bonus.md)
-
 ## Installation JHipster
 Suivez les instructions de https://www.jhipster.tech/installation/
 

@@ -7,16 +7,33 @@
 // Microservice productorder
 // =================================
 
+// SHA1 is 160 bits-long (20 bytes)
+SHA_LEN = 40
+IMAGE_MAX_BYTES = 5000000
+
+/** Product sold by the Online store */
 entity Product {
-	name String required
-    description String
-    image ImageBlob
+    sku String required /* TODO pattern */
+    upc String required /* TODO pattern */
+    name String required
+    description TextBlob
     price BigDecimal required min(0)
-    size Size required
+    size ProductSize required
+    colors String pattern(/^([a-z]+,)*[a-z]+$/) 
+    /** For uploading the image */
+    image ImageBlob maxbytes(IMAGE_MAX_BYTES)
+    /** For caching with HTTP header Etag and If-None-Match */
+    imageSha1 String minlength(SHA_LEN) maxlength(SHA_LEN) pattern(/[a-f0-9]{40}/)
+    /** For the content delivery network */
+    imageCdnUrl String /* TODO pattern */
+    /** For caching with HTTP header Etag and If-None-Match */
+    thumbnailSha1 String minlength(SHA_LEN) maxlength(SHA_LEN) pattern(/[a-f0-9]{40}/)
+    /** For the content delivery network */
+    thumbnailCdnUrl String /* TODO pattern */
 }
 
 enum Size {
-	S, M, L, XL, XXL
+	XS, S, M, L, XL, XXL
 }
 
 entity ProductCategory {
@@ -25,8 +42,8 @@ entity ProductCategory {
 }
 
 entity Customer {
-	userId Long required
-	firstName String required
+  userId Long required
+  firstName String required
   lastName String required
   gender Gender required
   email String required
@@ -82,5 +99,6 @@ dto Product, Customer, ProductOrder, OrderItem, ProductCategory with mapstruct
 //filter *
 
 service Product, Customer, ProductOrder, OrderItem, ProductCategory with serviceImpl
-paginate Product, Customer, ProductOrder, OrderItem, ProductCategory with pagination
+paginate Product with infinite-scroll
+paginate Customer, ProductOrder, OrderItem, ProductCategory with pagination
 microservice Product, Customer, ProductOrder, OrderItem, ProductCategory with productorder

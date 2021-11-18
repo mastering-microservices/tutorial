@@ -38,5 +38,5 @@ dto Invoice, Shipment with mapstruct
 //filter *
 
 service Invoice, Shipment with serviceClass
-paginate Invoice, Shipment with pagination
+paginate Invoice, Shipment with infinite-scroll
 microservice Invoice, Shipment with invoice

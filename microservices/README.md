@@ -2,14 +2,6 @@
 
 L'objectif de cette partie est la mise en place de microservices avec l'infrastructure microservices de JHipster.
 
-## Plan
-* [Sommaire](./README.md)
-* [Installation](./install.md)
-* [Création d'un monolithe](./monolith.md)
-* Création d'une architecture microservices
-* [Service Mesh avec Istio](./istio.md)
-* [Bonus track](./bonus.md)
-
 ## Création de la gateway et des microservices
 L'infrastructure de base est constitué de :
 * du registre de services de JHipster
