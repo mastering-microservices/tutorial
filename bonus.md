@@ -33,3 +33,9 @@ jhipster --version
 yarn global upgrade generator-jhipster@5.1.0
 jhipster --version
 ```
+
+## Spring Eureka
+Plusieurs exemples de clients Eureka (Java, Node.js)
+* https://itnext.io/how-to-use-netflixs-eureka-and-spring-cloud-for-service-registry-8b43c8acdf4e
+* https://github.com/paigen11/eureka-services-example
+* https://spring.io/guides/gs/service-registration-and-discovery/
